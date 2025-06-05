@@ -1,6 +1,5 @@
 import { DiscordContextProvider } from '../hooks/useDiscordSdk'
 import { Activity } from './Activity'
-import './App.css'
 
 /**
  * Set `authenticate` to true to enable Discord authentication.
