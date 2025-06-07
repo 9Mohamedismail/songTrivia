@@ -6,13 +6,51 @@ import SearchBar from '../components/SearchBar'
 import Footer from '../components/Footer'
 import PlaySong from '../components/PlaySong'
 import SongProgressBar from '../components/SongProgressBar'
+import styled from 'styled-components'
 
-/**
- * This is your Discord Activity's main component. Customize it as you like!
- *
- * Learn more:
- * https://robojs.dev/discord-activities
- */
+const AppContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+	width: 100%;
+`
+
+const GameWrapper = styled.div`
+	display: flex;
+	justify-content: center;
+	flex: 1;
+	width: 100%;
+`
+
+const Game = styled.div`
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	max-width: 640px;
+	height: 100%;
+`
+
+const GuessesSection = styled.div`
+	height: 300px;
+	width: 100%;
+	flex-shrink: 0;
+`
+
+const MiddleSection = styled.div`
+	flex: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+`
+
+const BottomUI = styled.div`
+	display: flex;
+	flex-direction: column;
+	height: 300px;
+	width: 100%;
+	flex-shrink: 0;
+`
+
 export const Activity = () => {
 	const { authenticated, discordSdk, status } = useDiscordSdk()
 	const [channelName, setChannelName] = useState()
@@ -34,13 +72,22 @@ export const Activity = () => {
 	}, [authenticated, discordSdk])
 
 	return (
-		<>
+		<AppContainer>
 			<NavBar />
-			<Guesses />
-			<SongProgressBar />
-			<PlaySong />
-			<SearchBar />
-			<Footer />
-		</>
+			<GameWrapper>
+				<Game>
+					<GuessesSection>
+						<Guesses />
+					</GuessesSection>
+					<MiddleSection></MiddleSection>
+					<BottomUI>
+						<SongProgressBar />
+						<PlaySong />
+						<SearchBar />
+						<Footer />
+					</BottomUI>
+				</Game>
+			</GameWrapper>
+		</AppContainer>
 	)
 }

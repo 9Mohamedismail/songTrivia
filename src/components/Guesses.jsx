@@ -4,31 +4,43 @@ const StyledContainter = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	gap: 20px;
+	margin-top: 20px;
+	gap: 16px;
+	width: 100%;
 `
 const GuessContainter = styled.div`
 	display: flex;
 	border: 1px solid;
-	width: 50%;
+	width: 100%;
+	padding: 8px;
+	border-radius: 6px;
+	align-items: center;
+	box-sizing: border-box;
+`
+
+const GuessText = styled.h1`
+	font-size: 20px;
+	margin: 0;
+	line-height: 1.5;
 `
 
 function Guesses() {
 	return (
 		<StyledContainter>
 			<GuessContainter>
-				<h1> Hello World</h1>
+				<GuessText> Hello World</GuessText>
 			</GuessContainter>
 			<GuessContainter>
-				<h1> Hello World</h1>
+				<GuessText> Hello World</GuessText>
 			</GuessContainter>
 			<GuessContainter>
-				<h1> Hello World</h1>
+				<GuessText> Hello World</GuessText>
 			</GuessContainter>
 			<GuessContainter>
-				<h1> Hello World</h1>
+				<GuessText> Hello World</GuessText>
 			</GuessContainter>
 			<GuessContainter>
-				<h1> Hello World</h1>
+				<GuessText> Hello World</GuessText>
 			</GuessContainter>
 		</StyledContainter>
 	)

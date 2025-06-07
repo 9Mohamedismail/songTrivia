@@ -1,0 +1,13 @@
+body {
+	margin: 0 !important;
+	padding: 0 !important;
+	height: 100% !important;
+}
+
+* {
+	font-family:
+		IBM Plex Mono,
+		Noto Sans Mono Variable,
+		Noto Sans Mono,
+		monospace !important;
+}

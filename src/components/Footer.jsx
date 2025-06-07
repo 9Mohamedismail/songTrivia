@@ -7,7 +7,7 @@ const StyledFooter = styled.div`
 
 const FooterContent = styled.div`
 	display: flex;
-	justify-content: space-around;
+	justify-content: space-between;
 	width: 100%;
 `
 

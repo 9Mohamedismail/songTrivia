@@ -2,7 +2,8 @@ import styled from 'styled-components'
 
 const StyledContainter = styled.div`
 	display: flex;
-	justify-content: space-around;
+	justify-content: space-between;
+	width: 100%;
 `
 
 function PlaySong() {
