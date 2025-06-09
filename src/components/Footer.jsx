@@ -15,12 +15,12 @@ const StyledButton = styled.button`
 	height: 25px;
 `
 
-function Footer() {
+function Footer({ onSubmit, handleSkip }) {
 	return (
 		<StyledFooter>
 			<FooterContent>
-				<StyledButton>Hello World</StyledButton>
-				<StyledButton>Hello World</StyledButton>
+				<StyledButton onClick={handleSkip}>Hello World</StyledButton>
+				<StyledButton onClick={onSubmit}>Submit</StyledButton>
 			</FooterContent>
 		</StyledFooter>
 	)

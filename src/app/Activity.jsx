@@ -52,6 +52,17 @@ const BottomUI = styled.div`
 `
 
 export const Activity = () => {
+	const [currentGuessInput, setCurrentGuessInput] = useState('')
+	const [songDuration, setSongDuration] = useState(1)
+	const [songGuesses, setSongGuesses] = useState(Array(6).fill(''))
+
+	const handleGuesses = (userGuess) => {
+		const findEmptyGuess = songGuesses.findIndex((guesses) => guesses === '')
+		if (findEmptyGuess === -1) return
+		setSongGuesses(songGuesses.map((guesses, index) => (index === findEmptyGuess ? userGuess : guesses)))
+		setSongDuration(songDuration + findEmptyGuess + 1)
+	}
+
 	const { authenticated, discordSdk, status } = useDiscordSdk()
 	const [channelName, setChannelName] = useState()
 
@@ -77,14 +88,22 @@ export const Activity = () => {
 			<GameWrapper>
 				<Game>
 					<GuessesSection>
-						<Guesses />
+						<Guesses songGuesses={songGuesses} />
 					</GuessesSection>
 					<MiddleSection></MiddleSection>
 					<BottomUI>
 						<SongProgressBar />
-						<PlaySong />
-						<SearchBar />
-						<Footer />
+						<PlaySong songDuration={songDuration} />
+						<SearchBar value={currentGuessInput} onChange={setCurrentGuessInput} />
+						<Footer
+							onSubmit={() => {
+								handleGuesses(currentGuessInput)
+								setCurrentGuessInput('')
+							}}
+							handleSkip={() => {
+								handleGuesses('Skipped')
+							}}
+						/>
 					</BottomUI>
 				</Game>
 			</GameWrapper>

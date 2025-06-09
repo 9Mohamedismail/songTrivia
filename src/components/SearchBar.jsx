@@ -29,12 +29,17 @@ const StyledInput = styled.input`
 	padding: 12px 16px 12px 40px;
 `
 
-function SearchBar() {
+function SearchBar({ value, onChange }) {
 	return (
 		<StyledContainter>
 			<InputWrapper>
 				<StyledIcon />
-				<StyledInput type="search" placeholder="Search for the title" />
+				<StyledInput
+					type="search"
+					placeholder="Search for the title"
+					value={value}
+					onChange={(e) => onChange(e.target.value)}
+				/>
 			</InputWrapper>
 		</StyledContainter>
 	)

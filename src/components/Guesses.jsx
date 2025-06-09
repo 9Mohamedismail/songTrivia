@@ -12,6 +12,8 @@ const GuessContainter = styled.div`
 	display: flex;
 	border: 1px solid;
 	width: 100%;
+	min-width: 640px;
+	min-height: 48px;
 	padding: 8px;
 	border-radius: 6px;
 	align-items: center;
@@ -24,24 +26,14 @@ const GuessText = styled.h1`
 	line-height: 1.5;
 `
 
-function Guesses() {
+function Guesses({ songGuesses }) {
 	return (
 		<StyledContainter>
-			<GuessContainter>
-				<GuessText> Hello World</GuessText>
-			</GuessContainter>
-			<GuessContainter>
-				<GuessText> Hello World</GuessText>
-			</GuessContainter>
-			<GuessContainter>
-				<GuessText> Hello World</GuessText>
-			</GuessContainter>
-			<GuessContainter>
-				<GuessText> Hello World</GuessText>
-			</GuessContainter>
-			<GuessContainter>
-				<GuessText> Hello World</GuessText>
-			</GuessContainter>
+			{songGuesses.map((guess) => (
+				<GuessContainter>
+					<GuessText> {guess}</GuessText>
+				</GuessContainter>
+			))}
 		</StyledContainter>
 	)
 }
