@@ -7,9 +7,8 @@ const StyledContainter = styled.div`
 	width: 100%;
 `
 
-function PlaySong({ songDuration }) {
+function PlaySong({ songDuration, songProgress, setSongProgress }) {
 	const [isPlaying, setIsPlaying] = useState(true)
-	const [songProgress, setSongProgress] = useState(0)
 
 	const audioRef = useRef(new Audio('/toodeep.mp3'))
 	const timeoutRef = useRef(null)
@@ -51,7 +50,7 @@ function PlaySong({ songDuration }) {
 
 	return (
 		<StyledContainter>
-			<h1>{'0:0' + Math.floor(songProgress)} </h1>
+			<h1>{`0:${String(Math.floor(songProgress)).padStart(2, '0')}`}</h1>
 			<button onClick={handleAudio}>Play Song</button>
 			<h1> 0:16</h1>
 		</StyledContainter>

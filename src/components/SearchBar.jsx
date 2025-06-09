@@ -29,7 +29,7 @@ const StyledInput = styled.input`
 	padding: 12px 16px 12px 40px;
 `
 
-function SearchBar({ value, onChange }) {
+function SearchBar({ value, onChange, onSubmit }) {
 	return (
 		<StyledContainter>
 			<InputWrapper>
@@ -39,6 +39,12 @@ function SearchBar({ value, onChange }) {
 					placeholder="Search for the title"
 					value={value}
 					onChange={(e) => onChange(e.target.value)}
+					onKeyDown={(e) => {
+						if (e.key === 'Enter') {
+							e.preventDefault()
+							onSubmit()
+						}
+					}}
 				/>
 			</InputWrapper>
 		</StyledContainter>

@@ -54,6 +54,7 @@ const BottomUI = styled.div`
 export const Activity = () => {
 	const [currentGuessInput, setCurrentGuessInput] = useState('')
 	const [songDuration, setSongDuration] = useState(1)
+	const [songProgress, setSongProgress] = useState(0)
 	const [songGuesses, setSongGuesses] = useState(Array(6).fill(''))
 
 	const handleGuesses = (userGuess) => {
@@ -61,6 +62,11 @@ export const Activity = () => {
 		if (findEmptyGuess === -1) return
 		setSongGuesses(songGuesses.map((guesses, index) => (index === findEmptyGuess ? userGuess : guesses)))
 		setSongDuration(songDuration + findEmptyGuess + 1)
+	}
+
+	const handleSubmit = () => {
+		handleGuesses(currentGuessInput)
+		setCurrentGuessInput('')
 	}
 
 	const { authenticated, discordSdk, status } = useDiscordSdk()
@@ -92,14 +98,11 @@ export const Activity = () => {
 					</GuessesSection>
 					<MiddleSection></MiddleSection>
 					<BottomUI>
-						<SongProgressBar />
-						<PlaySong songDuration={songDuration} />
-						<SearchBar value={currentGuessInput} onChange={setCurrentGuessInput} />
+						<SongProgressBar songProgress={songProgress} />
+						<PlaySong songDuration={songDuration} songProgress={songProgress} setSongProgress={setSongProgress} />
+						<SearchBar value={currentGuessInput} onChange={setCurrentGuessInput} onSubmit={handleSubmit} />
 						<Footer
-							onSubmit={() => {
-								handleGuesses(currentGuessInput)
-								setCurrentGuessInput('')
-							}}
+							onSubmit={handleSubmit}
 							handleSkip={() => {
 								handleGuesses('Skipped')
 							}}
