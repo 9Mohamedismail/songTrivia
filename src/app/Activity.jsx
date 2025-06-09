@@ -106,6 +106,7 @@ export const Activity = () => {
 							handleSkip={() => {
 								handleGuesses('Skipped')
 							}}
+							numberOfGuesses={songGuesses}
 						/>
 					</BottomUI>
 				</Game>

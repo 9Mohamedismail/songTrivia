@@ -15,11 +15,13 @@ const StyledButton = styled.button`
 	height: 25px;
 `
 
-function Footer({ onSubmit, handleSkip }) {
+function Footer({ onSubmit, handleSkip, numberOfGuesses }) {
 	return (
 		<StyledFooter>
 			<FooterContent>
-				<StyledButton onClick={handleSkip}>Hello World</StyledButton>
+				<StyledButton onClick={handleSkip}>
+					Skip ( + {numberOfGuesses.findIndex((guesses) => guesses === '') + 1} s)
+				</StyledButton>
 				<StyledButton onClick={onSubmit}>Submit</StyledButton>
 			</FooterContent>
 		</StyledFooter>
