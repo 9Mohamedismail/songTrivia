@@ -55,7 +55,9 @@ function PlaySong({ songDuration, songProgress, setSongProgress }) {
 
 		if (isPlaying) {
 			audio.pause()
+			audio.currentTime = 0
 			setIsPlaying(false)
+			setSongProgress(0)
 		} else {
 			audio.currentTime = 0
 			audio
@@ -69,7 +71,11 @@ function PlaySong({ songDuration, songProgress, setSongProgress }) {
 		<StyledContainter>
 			<h1>{`0:${String(Math.floor(songProgress)).padStart(2, '0')}`}</h1>
 			<MediaWrapper>
-				{isPlaying ? <Lottie animationData={equalizerAnim} loop autoplay /> : <FaRegPlayCircle onClick={handleAudio} />}
+				{isPlaying ? (
+					<Lottie animationData={equalizerAnim} loop autoplay onClick={handleAudio} />
+				) : (
+					<FaRegPlayCircle onClick={handleAudio} />
+				)}
 			</MediaWrapper>
 			<h1> 0:16</h1>
 		</StyledContainter>
