@@ -7,6 +7,7 @@ import Footer from '../components/Footer'
 import PlaySong from '../components/PlaySong'
 import SongProgressBar from '../components/SongProgressBar'
 import styled from 'styled-components'
+import gachaDestinyData from '../util/gachaDestinyData.json'
 
 const AppContainer = styled.div`
 	display: flex;
@@ -55,13 +56,38 @@ export const Activity = () => {
 	const [currentGuessInput, setCurrentGuessInput] = useState('')
 	const [songDuration, setSongDuration] = useState(1)
 	const [songProgress, setSongProgress] = useState(0)
-	const [songGuesses, setSongGuesses] = useState(Array(6).fill(''))
+	const [songGuesses, setSongGuesses] = useState(Array(6).fill(null))
+	const [filteredSuggestions, setFilteredSuggestions] = useState([])
+	const [showSuggestions, setShowSuggestions] = useState(false)
 
 	const handleGuesses = (userGuess) => {
-		const findEmptyGuess = songGuesses.findIndex((guesses) => guesses === '')
+		const findEmptyGuess = songGuesses.findIndex((guesses) => guesses === null)
 		if (findEmptyGuess === -1) return
-		setSongGuesses(songGuesses.map((guesses, index) => (index === findEmptyGuess ? userGuess : guesses)))
+		const songObject =
+			userGuess === 'Skipped'
+				? {
+						id: 'Skipped',
+						title: 'Skipped',
+						artist: '',
+						genre: '',
+						year: '',
+						album: ''
+					}
+				: gachaDestinyData.find((item) => item.id === userGuess)
+		if (!songObject) return
+		setSongGuesses(songGuesses.map((guess, index) => (index === findEmptyGuess ? songObject : guess)))
 		setSongDuration(songDuration + findEmptyGuess + 1)
+	}
+
+	const handleSearchChange = (val) => {
+		setCurrentGuessInput(val)
+
+		const matches = gachaDestinyData
+			.filter((item) => item.id.toLowerCase().includes(val.toLowerCase()))
+			.map((item) => item.id)
+
+		setFilteredSuggestions(matches)
+		setShowSuggestions(val.trim() !== '' && matches.length > 0)
 	}
 
 	const handleSubmit = () => {
@@ -100,7 +126,18 @@ export const Activity = () => {
 					<BottomUI>
 						<SongProgressBar songProgress={songProgress} />
 						<PlaySong songDuration={songDuration} songProgress={songProgress} setSongProgress={setSongProgress} />
-						<SearchBar value={currentGuessInput} onChange={setCurrentGuessInput} onSubmit={handleSubmit} />
+						<SearchBar
+							value={currentGuessInput}
+							onChange={handleSearchChange}
+							onSubmit={handleSubmit}
+							filteredSuggestions={filteredSuggestions}
+							showSuggestions={showSuggestions}
+							setShowSuggestions={setShowSuggestions}
+							onSuggestionClick={(val) => {
+								setCurrentGuessInput(val)
+								setShowSuggestions(false)
+							}}
+						/>
 						<Footer
 							onSubmit={handleSubmit}
 							handleSkip={() => {

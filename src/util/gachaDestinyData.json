@@ -1,0 +1,42 @@
+[
+  {
+    "id": "J. Cole - Middle Child",
+    "title": "Middle Child",
+    "artist": "J. Cole",
+    "genre": "Hip-Hop",
+    "year": 2019,
+    "album": "Single"
+  },
+  {
+    "id": "J. Cole - Brackets",
+    "title": "Brackets",
+    "artist": "J. Cole",
+    "genre": "Hip-Hop",
+    "year": 2018,
+    "album": "KOD"
+  },
+  {
+    "id": "Billie Eilish - Bad Guy",
+    "title": "Bad Guy",
+    "artist": "Billie Eilish",
+    "genre": "Pop",
+    "year": 2019,
+    "album": "When We All Fall Asleep, Where Do We Go?"
+  },
+  {
+    "id": "Kendrick Lamar - HUMBLE.",
+    "title": "HUMBLE.",
+    "artist": "Kendrick Lamar",
+    "genre": "Hip-Hop",
+    "year": 2017,
+    "album": "DAMN."
+  },
+  {
+    "id": "The Weeknd - Blinding Lights",
+    "title": "Blinding Lights",
+    "artist": "The Weeknd",
+    "genre": "Synth-pop",
+    "year": 2019,
+    "album": "After Hours"
+  }
+]

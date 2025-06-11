@@ -1,3 +1,4 @@
+import { useRef, useEffect } from 'react'
 import styled from 'styled-components'
 import { IoSearchOutline } from 'react-icons/io5'
 
@@ -28,10 +29,56 @@ const StyledInput = styled.input`
 	border: 1px solid #383838;
 	padding: 12px 16px 12px 40px;
 `
+const SuggestionsList = styled.ul`
+	position: absolute;
+	top: 100%;
+	left: 0;
+	width: 100%;
+	background: white;
+	border: 1px solid #ccc;
+	border-top: none;
+	max-height: 200px;
+	overflow-y: auto;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	z-index: 10;
+`
 
-function SearchBar({ value, onChange, onSubmit }) {
+const SuggestionItem = styled.li`
+	padding: 10px;
+	cursor: pointer;
+	&:hover {
+		background: #eee;
+	}
+`
+
+function SearchBar({
+	value,
+	onChange,
+	onSubmit,
+	filteredSuggestions = [],
+	showSuggestions = false,
+	setShowSuggestions,
+	onSuggestionClick
+}) {
+	const wrapperRef = useRef(null)
+
+	useEffect(() => {
+		function handleClickOutside(event) {
+			if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+				setShowSuggestions(false)
+			}
+		}
+
+		document.addEventListener('mousedown', handleClickOutside)
+		return () => {
+			document.removeEventListener('mousedown', handleClickOutside)
+		}
+	}, [onSuggestionClick])
+
 	return (
-		<StyledContainter>
+		<StyledContainter ref={wrapperRef}>
 			<InputWrapper>
 				<StyledIcon />
 				<StyledInput
@@ -46,9 +93,17 @@ function SearchBar({ value, onChange, onSubmit }) {
 						}
 					}}
 				/>
+				{showSuggestions && (
+					<SuggestionsList>
+						{filteredSuggestions.map((suggestion, index) => (
+							<SuggestionItem key={index} onClick={() => onSuggestionClick(suggestion)}>
+								{suggestion}
+							</SuggestionItem>
+						))}
+					</SuggestionsList>
+				)}
 			</InputWrapper>
 		</StyledContainter>
 	)
 }
-
 export default SearchBar
