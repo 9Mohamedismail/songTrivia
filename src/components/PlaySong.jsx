@@ -7,20 +7,60 @@ import styled from 'styled-components'
 const StyledContainter = styled.div`
 	display: flex;
 	justify-content: space-between;
+	align-items: center;
 	width: 100%;
+	max-width: 640px;
+	padding: 12px;
+	box-sizing: border-box;
+
+	@media (max-width: 480px) {
+		padding: 8px;
+	}
 `
+
+const TimeDisplay = styled.h2`
+	font-size: 18px;
+	margin: 0;
+	font-weight: 500;
+	color: #374151;
+	min-width: 50px;
+
+	@media (max-width: 480px) {
+		font-size: 16px;
+		min-width: 45px;
+	}
+`
+
 const MediaWrapper = styled.div`
-	width: 80px;
-	height: 80px;
+	width: 64px;
+	height: 64px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	background: none;
+	border: none;
+	cursor: pointer;
+	border-radius: 50%;
+	transition: all 0.2s ease;
 
-	svg,
-	canvas,
-	div {
+	&:hover {
+		background: #f3f4f6;
+		transform: scale(1.05);
+	}
+
+	&:active {
+		transform: scale(0.95);
+	}
+
+	svg {
 		width: 100%;
 		height: 100%;
+		color: #374151;
+	}
+
+	@media (max-width: 480px) {
+		width: 56px;
+		height: 56px;
 	}
 `
 
@@ -69,7 +109,7 @@ function PlaySong({ songDuration, songProgress, setSongProgress }) {
 
 	return (
 		<StyledContainter>
-			<h1>{`0:${String(Math.floor(songProgress)).padStart(2, '0')}`}</h1>
+			<TimeDisplay>{`0:${String(Math.floor(songProgress)).padStart(2, '0')}`}</TimeDisplay>
 			<MediaWrapper>
 				{isPlaying ? (
 					<Lottie animationData={equalizerAnim} loop autoplay onClick={handleAudio} />
@@ -77,7 +117,7 @@ function PlaySong({ songDuration, songProgress, setSongProgress }) {
 					<FaRegPlayCircle onClick={handleAudio} />
 				)}
 			</MediaWrapper>
-			<h1> 0:16</h1>
+			<TimeDisplay>0:16</TimeDisplay>
 		</StyledContainter>
 	)
 }

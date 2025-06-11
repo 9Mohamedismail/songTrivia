@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import styled from 'styled-components'
-import { FaCircleXmark } from 'react-icons/fa6'
-import { IoIosCheckmarkCircle } from 'react-icons/io'
+import { FaCircleXmark, FaCircleCheck } from 'react-icons/fa6'
 import gachaDestinyData from '../util/gachaDestinyData.json'
 
 const StyledContainter = styled.div`
@@ -11,27 +10,63 @@ const StyledContainter = styled.div`
 	margin-top: 20px;
 	gap: 16px;
 	width: 100%;
+	padding: 0 12px;
+
+	@media (max-width: 480px) {
+		padding: 0 8px;
+	}
 `
 const GuessContainter = styled.div`
 	display: flex;
+	flex-wrap: wrap;
 	border: 1px solid;
 	width: 100%;
-	min-width: 640px;
-	min-height: 48px;
-	padding: 8px;
+	max-width: 640px;
+	min-height: 40px;
+	padding: 6px;
 	border-radius: 6px;
 	align-items: center;
 	box-sizing: border-box;
-	gap: 16px;
+	gap: 8px;
+
+	@media (max-width: 480px) {
+		min-height: 36px;
+		padding: 4px;
+		gap: 4px;
+	}
 `
 
 const GuessText = styled.h1`
 	display: flex;
-	font-size: 20px;
+	align-items: center;
+	font-size: 14px;
 	margin: 0;
-	line-height: 1.5;
-	gap: 8px;
-	color: ${(props) => (props.correct ? 'green' : 'red')};
+	line-height: 1.3;
+	gap: 4px;
+	color: ${(props) => (props.correct ? '#059669' : '#dc2626')};
+	flex: 1;
+	min-width: 0;
+	word-break: break-word;
+
+	svg {
+		flex-shrink: 0;
+		width: 14px;
+		height: 14px;
+	}
+
+	@media (max-width: 480px) {
+		font-size: 12px;
+		gap: 3px;
+
+		svg {
+			width: 12px;
+			height: 12px;
+		}
+	}
+
+	@media (max-width: 360px) {
+		font-size: 11px;
+	}
 `
 
 function Guesses({ songGuesses }) {
@@ -70,19 +105,19 @@ function Guesses({ songGuesses }) {
 				return (
 					<GuessContainter key={guess.id}>
 						<GuessText correct={feedback.artist}>
-							{feedback.artist ? <IoIosCheckmarkCircle /> : <FaCircleXmark />}
+							{feedback.artist ? <FaCircleCheck /> : <FaCircleXmark />}
 							{guess.artist}
 						</GuessText>
 						<GuessText correct={feedback.title}>
-							{feedback.title ? <IoIosCheckmarkCircle /> : <FaCircleXmark />}
+							{feedback.title ? <FaCircleCheck /> : <FaCircleXmark />}
 							{guess.title}
 						</GuessText>
 						<GuessText correct={feedback.genre}>
-							{feedback.genre ? <IoIosCheckmarkCircle /> : <FaCircleXmark />}
+							{feedback.genre ? <FaCircleCheck /> : <FaCircleXmark />}
 							{guess.genre}
 						</GuessText>
 						<GuessText correct={feedback.year}>
-							{feedback.year ? <IoIosCheckmarkCircle /> : <FaCircleXmark />}
+							{feedback.year ? <FaCircleCheck /> : <FaCircleXmark />}
 							{guess.year}
 						</GuessText>
 					</GuessContainter>

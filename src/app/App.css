@@ -1,13 +1,23 @@
-body {
-	margin: 0 !important;
-	padding: 0 !important;
-	height: 100% !important;
+html {
+	height: 100%;
 }
 
-* {
+body {
+	margin: 0;
+	padding: 0;
+	height: 100vh;
+	height: -webkit-fill-available;
+	box-sizing: border-box;
+	background-color: white;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: inherit;
 	font-family:
 		IBM Plex Mono,
 		Noto Sans Mono Variable,
 		Noto Sans Mono,
-		monospace !important;
+		monospace;
 }

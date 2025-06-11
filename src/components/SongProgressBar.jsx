@@ -3,22 +3,36 @@ import styled from 'styled-components'
 const StyledContainter = styled.div`
 	display: flex;
 	border: 1px solid;
-	margin-bottom: 10px;
-	height: 20px;
+	margin-bottom: 12px;
+	height: 24px;
 	position: relative;
+	border-radius: 4px;
+	overflow: hidden;
+	background: #f9fafb;
+
+	@media (max-width: 480px) {
+		height: 20px;
+		margin-bottom: 8px;
+	}
 `
 
 const ProgressBar = styled.div`
-	background-color: green;
-	width: ${(props) => props.progress + '%'};
+	background: linear-gradient(90deg, #10b981, #059669);
+	width: ${(props) => props.progress}%;
 	transition: width 0.2s linear;
+	position: relative;
 `
 const Tick = styled.div`
 	position: absolute;
 	width: 2px;
 	height: 100%;
-	background-color: black;
+	background-color: #374151;
 	left: ${(props) => props.left}%;
+	z-index: 10;
+
+	@media (max-width: 480px) {
+		width: 1px;
+	}
 `
 function SongProgressBar({ songProgress }) {
 	const totalSeconds = 16

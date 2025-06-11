@@ -5,11 +5,18 @@ import { IoSearchOutline } from 'react-icons/io5'
 const StyledContainter = styled.div`
 	display: flex;
 	justify-content: center;
-	margin-top: 16px;
+	margin-top: 12px;
+	padding: 0 8px;
+
+	@media (max-width: 480px) {
+		padding: 0 4px;
+		margin-top: 8px;
+	}
 `
 const InputWrapper = styled.div`
 	position: relative;
 	width: 100%;
+	max-width: 640px;
 `
 
 const StyledIcon = styled(IoSearchOutline)`
@@ -17,7 +24,7 @@ const StyledIcon = styled(IoSearchOutline)`
 	top: 50%;
 	left: 12px;
 	transform: translateY(-50%);
-	color: #888;
+	color: #6b7280;
 	font-size: 20px;
 	pointer-events: none;
 `
@@ -25,9 +32,10 @@ const StyledIcon = styled(IoSearchOutline)`
 const StyledInput = styled.input`
 	font-size: 16px;
 	width: 100%;
-	border-radius: 11px;
-	border: 1px solid #383838;
-	padding: 12px 16px 12px 40px;
+	border-radius: 8px;
+	border: 1px solid;
+	padding: 12px 16px 12px 36px;
+	box-sizing: border-box;
 `
 const SuggestionsList = styled.ul`
 	position: absolute;
@@ -35,21 +43,44 @@ const SuggestionsList = styled.ul`
 	left: 0;
 	width: 100%;
 	background: white;
-	border: 1px solid #ccc;
+	border: 1px solid #d1d5db;
 	border-top: none;
-	max-height: 200px;
+	border-radius: 0 0 8px 8px;
+	max-height: 160px;
 	overflow-y: auto;
 	list-style: none;
 	padding: 0;
 	margin: 0;
-	z-index: 10;
+	z-index: 50;
+	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+
+	@media (max-width: 480px) {
+		max-height: 120px;
+	}
 `
 
 const SuggestionItem = styled.li`
-	padding: 10px;
+	padding: 12px;
 	cursor: pointer;
+	font-size: 14px;
+	border-bottom: 1px solid #f3f4f6;
+	transition: background-color 0.15s ease;
+
 	&:hover {
-		background: #eee;
+		background: #f9fafb;
+	}
+
+	&:active {
+		background: #f3f4f6;
+	}
+
+	&:last-child {
+		border-bottom: none;
+	}
+
+	@media (max-width: 480px) {
+		padding: 10px;
+		font-size: 13px;
 	}
 `
 

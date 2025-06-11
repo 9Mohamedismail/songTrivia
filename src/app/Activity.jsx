@@ -13,14 +13,29 @@ const AppContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	height: 100vh;
+	height: -webkit-fill-available;
 	width: 100%;
+	padding-top: env(safe-area-inset-top);
+	padding-left: env(safe-area-inset-left);
+	padding-right: env(safe-area-inset-right);
+	padding-bottom: env(safe-area-inset-bottom);
+	overflow: hidden;
+	background: #f9fafb;
 `
 
 const GameWrapper = styled.div`
 	display: flex;
 	justify-content: center;
+	align-items: flex-end;
+
 	flex: 1;
 	width: 100%;
+	padding: 0 8px;
+	overflow: hidden;
+
+	@media (max-width: 480px) {
+		padding: 0 4px;
+	}
 `
 
 const Game = styled.div`
@@ -29,27 +44,31 @@ const Game = styled.div`
 	width: 100%;
 	max-width: 640px;
 	height: 100%;
+	overflow: hidden;
 `
 
 const GuessesSection = styled.div`
-	height: 300px;
-	width: 100%;
-	flex-shrink: 0;
-`
-
-const MiddleSection = styled.div`
-	flex: 1;
 	display: flex;
-	align-items: center;
-	justify-content: center;
+	flex-direction: column;
+	flex: 1;
+	width: 100%;
+	min-height: 0;
+	overflow: hidden;
 `
-
 const BottomUI = styled.div`
 	display: flex;
 	flex-direction: column;
-	height: 300px;
 	width: 100%;
 	flex-shrink: 0;
+	background: white;
+
+	padding: 8px;
+	gap: 4px;
+
+	@media (max-width: 480px) {
+		padding: 6px;
+		gap: 2px;
+	}
 `
 
 export const Activity = () => {
@@ -122,7 +141,6 @@ export const Activity = () => {
 					<GuessesSection>
 						<Guesses songGuesses={songGuesses} />
 					</GuessesSection>
-					<MiddleSection></MiddleSection>
 					<BottomUI>
 						<SongProgressBar songProgress={songProgress} />
 						<PlaySong songDuration={songDuration} songProgress={songProgress} setSongProgress={setSongProgress} />
