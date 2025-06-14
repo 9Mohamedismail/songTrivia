@@ -69,16 +69,7 @@ const GuessText = styled.h1`
 	}
 `
 
-function Guesses({ songGuesses }) {
-	const correctAnswerObj = {
-		id: 'J. Cole - Middle Child',
-		title: 'Middle Child',
-		artist: 'J. Cole',
-		genre: 'Hip-Hop',
-		year: 2019,
-		album: 'Single'
-	}
-
+function Guesses({ songGuesses, song }) {
 	const getFeedback = (correct, guess) => {
 		const feedback = {
 			artist: guess.artist === correct.artist,
@@ -111,7 +102,7 @@ function Guesses({ songGuesses }) {
 					)
 				}
 
-				const feedback = getFeedback(correctAnswerObj, guess)
+				const feedback = getFeedback(song, guess)
 
 				return (
 					<GuessContainter key={guess.id}>

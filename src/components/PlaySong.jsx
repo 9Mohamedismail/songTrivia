@@ -67,24 +67,19 @@ const MediaWrapper = styled.div`
 	}
 `
 
-function PlaySong({ songDuration, songProgress, setSongProgress }) {
+function PlaySong({ songDuration, songProgress, setSongProgress, song }) {
 	const [isPlaying, setIsPlaying] = useState(false)
-	const [song, setSong] = useState(null)
+
 	const [audio, setAudio] = useState(null)
 
 	const timeoutRef = useRef(null)
-
-	useEffect(() => {
-		const songIndex = Math.floor(Math.random() * gachaDestinyData.length)
-		setSong(gachaDestinyData[songIndex].id)
-	}, [])
 
 	useEffect(() => {
 		if (!song) return
 
 		const loadAudio = async () => {
 			try {
-				const clipUrl = await getDownloadURL(ref(storage, `audio-clips/${song}.mp3`))
+				const clipUrl = await getDownloadURL(ref(storage, `audio-clips/${song.id}.mp3`))
 				const audioObj = new Audio(clipUrl)
 				const handleTimeUpdate = () => {
 					setSongProgress(audioObj.currentTime)

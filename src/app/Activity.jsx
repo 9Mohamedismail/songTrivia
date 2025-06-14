@@ -78,6 +78,12 @@ export const Activity = () => {
 	const [songGuesses, setSongGuesses] = useState(Array(6).fill(null))
 	const [filteredSuggestions, setFilteredSuggestions] = useState([])
 	const [showSuggestions, setShowSuggestions] = useState(false)
+	const [song, setSong] = useState(null)
+
+	useEffect(() => {
+		const songIndex = Math.floor(Math.random() * gachaDestinyData.length)
+		setSong(gachaDestinyData[songIndex])
+	}, [])
 
 	const handleGuesses = (userGuess) => {
 		const findEmptyGuess = songGuesses.findIndex((guesses) => guesses === null)
@@ -92,7 +98,7 @@ export const Activity = () => {
 						year: '',
 						album: ''
 					}
-				: gachaDestinyData.find((item) => item.id === userGuess)
+				: gachaDestinyData.find((item) => item.suggestion === userGuess)
 		if (!songObject) return
 		setSongGuesses(songGuesses.map((guess, index) => (index === findEmptyGuess ? songObject : guess)))
 		setSongDuration(songDuration + findEmptyGuess + 1)
@@ -102,8 +108,8 @@ export const Activity = () => {
 		setCurrentGuessInput(val)
 
 		const matches = gachaDestinyData
-			.filter((item) => item.id.toLowerCase().includes(val.toLowerCase()))
-			.map((item) => item.id)
+			.filter((item) => item.suggestion.toLowerCase().includes(val.toLowerCase()))
+			.map((item) => item.suggestion)
 
 		setFilteredSuggestions(matches)
 		setShowSuggestions(val.trim() !== '' && matches.length > 0)
@@ -139,11 +145,16 @@ export const Activity = () => {
 			<GameWrapper>
 				<Game>
 					<GuessesSection>
-						<Guesses songGuesses={songGuesses} />
+						<Guesses songGuesses={songGuesses} song={song} />
 					</GuessesSection>
 					<BottomUI>
 						<SongProgressBar songProgress={songProgress} />
-						<PlaySong songDuration={songDuration} songProgress={songProgress} setSongProgress={setSongProgress} />
+						<PlaySong
+							songDuration={songDuration}
+							songProgress={songProgress}
+							setSongProgress={setSongProgress}
+							song={song}
+						/>
 						<SearchBar
 							value={currentGuessInput}
 							onChange={handleSearchChange}

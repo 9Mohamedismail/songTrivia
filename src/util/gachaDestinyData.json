@@ -4,69 +4,79 @@
     "title": "Shape of You",
     "artist": "Ed Sheeran",
     "genre": "Pop",
-    "year": 2017
+    "year": 2017,
+    "suggestion": "Ed Sheeran - Shape of You"
   },
   {
     "id": "song2_thinking-out-loud",
     "title": "Thinking Out Loud",
     "artist": "Ed Sheeran",
     "genre": "Pop",
-    "year": 2014
+    "year": 2014,
+    "suggestion": "Ed Sheeran - Thinking Out Loud"
   },
   {
     "id": "song3_sorry",
     "title": "Sorry",
     "artist": "Justin Bieber",
     "genre": "Pop",
-    "year": 2015
+    "year": 2015,
+    "suggestion": "Justin Bieber - Sorry"
   },
   {
     "id": "song4_roar",
     "title": "Roar",
     "artist": "Katy Perry",
     "genre": "Pop",
-    "year": 2013
+    "year": 2013,
+    "suggestion": "Katy Perry - Roar"
   },
   {
     "id": "song5_despacito",
     "title": "Despacito",
     "artist": "Luis Fonsi ft. Daddy Yankee",
     "genre": "Reggaeton",
-    "year": 2017
+    "year": 2017,
+    "suggestion": "Luis Fonsi ft. Daddy Yankee - Despacito"
   },
   {
     "id": "song6_uptown-funk",
     "title": "Uptown Funk",
     "artist": "Mark Ronson ft. Bruno Mars",
     "genre": "Funk",
-    "year": 2014
+    "year": 2014,
+    "suggestion": "Mark Ronson ft. Bruno Mars - Uptown Funk"
   },
   {
     "id": "song7_counting-stars",
     "title": "Counting Stars",
     "artist": "OneRepublic",
     "genre": "Pop Rock",
-    "year": 2013
+    "year": 2013,
+    "suggestion": "OneRepublic - Counting Stars"
   },
   {
     "id": "song8_gangnam-style",
     "title": "Gangnam Style",
     "artist": "PSY",
     "genre": "K-Pop",
-    "year": 2012
+    "year": 2012,
+    "suggestion": "PSY - Gangnam Style"
   },
   {
     "id": "song9_sugar",
     "title": "Sugar",
     "artist": "Maroon 5",
     "genre": "Pop",
-    "year": 2014
+    "year": 2014,
+    "suggestion": "Maroon 5 - Sugar"
   },
   {
     "id": "song10_see-you-again",
     "title": "See You Again",
     "artist": "Wiz Khalifa ft. Charlie Puth",
     "genre": "Hip-Hop",
-    "year": 2015
+    "year": 2015,
+    "suggestion": "Wiz Khalifa ft. Charlie Puth - See You Again"
   }
 ]
