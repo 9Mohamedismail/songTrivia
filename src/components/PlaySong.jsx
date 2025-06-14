@@ -2,6 +2,8 @@ import { useRef, useState, useEffect } from 'react'
 import Lottie from 'lottie-react'
 import equalizerAnim from '../assets/equalizer.json'
 import { FaRegPlayCircle } from 'react-icons/fa'
+import { storage } from '../hooks/useFirebaseSdk'
+import { getStorage, ref, getDownloadURL } from 'firebase/storage'
 import styled from 'styled-components'
 
 const StyledContainter = styled.div`
@@ -66,31 +68,37 @@ const MediaWrapper = styled.div`
 
 function PlaySong({ songDuration, songProgress, setSongProgress }) {
 	const [isPlaying, setIsPlaying] = useState(false)
+	const [audio, setAudio] = useState(null)
 
-	const audioRef = useRef(new Audio('/toodeep.mp3'))
 	const timeoutRef = useRef(null)
 
 	useEffect(() => {
-		const audio = audioRef.current
-
-		const handleTimeUpdate = () => {
-			setSongProgress(audio.currentTime)
-			if (audio.currentTime >= songDuration) {
-				audio.pause()
-				setIsPlaying(false)
-				setSongProgress(songDuration)
+		const loadAudio = async () => {
+			try {
+				const clipUrl = await getDownloadURL(
+					ref(storage, 'audio-clips/Luis Fonsi Despacito ft. Daddy Yankee (audio) - Luis Fonsi.mp3')
+				)
+				const audioObj = new Audio(clipUrl)
+				const handleTimeUpdate = () => {
+					setSongProgress(audioObj.currentTime)
+					if (audioObj.currentTime >= songDuration) {
+						audioObj.pause()
+						setIsPlaying(false)
+						setSongProgress(songDuration)
+					}
+				}
+				audioObj.addEventListener('timeupdate', handleTimeUpdate)
+				setAudio(audioObj)
+			} catch (e) {
+				console.error('Failed to load audio:', e)
 			}
 		}
 
-		audio.addEventListener('timeupdate', handleTimeUpdate)
-
-		return () => {
-			audio.removeEventListener('timeupdate', handleTimeUpdate)
-		}
+		loadAudio()
 	}, [songDuration])
 
 	const handleAudio = () => {
-		const audio = audioRef.current
+		if (!audio) return
 		clearTimeout(timeoutRef.current)
 
 		if (isPlaying) {
