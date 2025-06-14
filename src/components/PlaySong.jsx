@@ -4,6 +4,7 @@ import equalizerAnim from '../assets/equalizer.json'
 import { FaRegPlayCircle } from 'react-icons/fa'
 import { storage } from '../hooks/useFirebaseSdk'
 import { getStorage, ref, getDownloadURL } from 'firebase/storage'
+import gachaDestinyData from '../util/gachaDestinyData.json'
 import styled from 'styled-components'
 
 const StyledContainter = styled.div`
@@ -68,16 +69,22 @@ const MediaWrapper = styled.div`
 
 function PlaySong({ songDuration, songProgress, setSongProgress }) {
 	const [isPlaying, setIsPlaying] = useState(false)
+	const [song, setSong] = useState(null)
 	const [audio, setAudio] = useState(null)
 
 	const timeoutRef = useRef(null)
 
 	useEffect(() => {
+		const songIndex = Math.floor(Math.random() * gachaDestinyData.length)
+		setSong(gachaDestinyData[songIndex].id)
+	}, [])
+
+	useEffect(() => {
+		if (!song) return
+
 		const loadAudio = async () => {
 			try {
-				const clipUrl = await getDownloadURL(
-					ref(storage, 'audio-clips/Luis Fonsi Despacito ft. Daddy Yankee (audio) - Luis Fonsi.mp3')
-				)
+				const clipUrl = await getDownloadURL(ref(storage, `audio-clips/${song}.mp3`))
 				const audioObj = new Audio(clipUrl)
 				const handleTimeUpdate = () => {
 					setSongProgress(audioObj.currentTime)
@@ -95,7 +102,7 @@ function PlaySong({ songDuration, songProgress, setSongProgress }) {
 		}
 
 		loadAudio()
-	}, [songDuration])
+	}, [song, songDuration])
 
 	const handleAudio = () => {
 		if (!audio) return

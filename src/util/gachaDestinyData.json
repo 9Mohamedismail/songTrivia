@@ -1,42 +1,72 @@
 [
   {
-    "id": "J. Cole - Middle Child",
-    "title": "Middle Child",
-    "artist": "J. Cole",
-    "genre": "Hip-Hop",
-    "year": 2019,
-    "album": "Single"
-  },
-  {
-    "id": "J. Cole - Brackets",
-    "title": "Brackets",
-    "artist": "J. Cole",
-    "genre": "Hip-Hop",
-    "year": 2018,
-    "album": "KOD"
-  },
-  {
-    "id": "Billie Eilish - Bad Guy",
-    "title": "Bad Guy",
-    "artist": "Billie Eilish",
+    "id": "song1_shape-of-you",
+    "title": "Shape of You",
+    "artist": "Ed Sheeran",
     "genre": "Pop",
-    "year": 2019,
-    "album": "When We All Fall Asleep, Where Do We Go?"
+    "year": 2017
   },
   {
-    "id": "Kendrick Lamar - HUMBLE.",
-    "title": "HUMBLE.",
-    "artist": "Kendrick Lamar",
+    "id": "song2_thinking-out-loud",
+    "title": "Thinking Out Loud",
+    "artist": "Ed Sheeran",
+    "genre": "Pop",
+    "year": 2014
+  },
+  {
+    "id": "song3_sorry",
+    "title": "Sorry",
+    "artist": "Justin Bieber",
+    "genre": "Pop",
+    "year": 2015
+  },
+  {
+    "id": "song4_roar",
+    "title": "Roar",
+    "artist": "Katy Perry",
+    "genre": "Pop",
+    "year": 2013
+  },
+  {
+    "id": "song5_despacito",
+    "title": "Despacito",
+    "artist": "Luis Fonsi ft. Daddy Yankee",
+    "genre": "Reggaeton",
+    "year": 2017
+  },
+  {
+    "id": "song6_uptown-funk",
+    "title": "Uptown Funk",
+    "artist": "Mark Ronson ft. Bruno Mars",
+    "genre": "Funk",
+    "year": 2014
+  },
+  {
+    "id": "song7_counting-stars",
+    "title": "Counting Stars",
+    "artist": "OneRepublic",
+    "genre": "Pop Rock",
+    "year": 2013
+  },
+  {
+    "id": "song8_gangnam-style",
+    "title": "Gangnam Style",
+    "artist": "PSY",
+    "genre": "K-Pop",
+    "year": 2012
+  },
+  {
+    "id": "song9_sugar",
+    "title": "Sugar",
+    "artist": "Maroon 5",
+    "genre": "Pop",
+    "year": 2014
+  },
+  {
+    "id": "song10_see-you-again",
+    "title": "See You Again",
+    "artist": "Wiz Khalifa ft. Charlie Puth",
     "genre": "Hip-Hop",
-    "year": 2017,
-    "album": "DAMN."
-  },
-  {
-    "id": "The Weeknd - Blinding Lights",
-    "title": "Blinding Lights",
-    "artist": "The Weeknd",
-    "genre": "Synth-pop",
-    "year": 2019,
-    "album": "After Hours"
+    "year": 2015
   }
 ]
