@@ -39,21 +39,20 @@ const StyledInput = styled.input`
 `
 const SuggestionsList = styled.ul`
 	position: absolute;
-	top: 100%;
+	bottom: 100%;
 	left: 0;
 	width: 100%;
 	background: white;
 	border: 1px solid #d1d5db;
-	border-top: none;
-	border-radius: 0 0 8px 8px;
+	border-bottom: none;
+	bborder-radius: 8px 8px 0 0;
 	max-height: 160px;
 	overflow-y: auto;
 	list-style: none;
 	padding: 0;
 	margin: 0;
 	z-index: 50;
-	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-
+	box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1);
 	@media (max-width: 480px) {
 		max-height: 120px;
 	}

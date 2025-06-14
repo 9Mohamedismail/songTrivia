@@ -43,7 +43,7 @@ const GuessText = styled.h1`
 	margin: 0;
 	line-height: 1.3;
 	gap: 4px;
-	color: ${(props) => (props.correct ? '#059669' : '#dc2626')};
+	color: ${(props) => (props.correct === 'Skipped' ? '#1e293b' : props.correct ? '#059669' : '#dc2626')};
 	flex: 1;
 	min-width: 0;
 	word-break: break-word;
@@ -96,6 +96,17 @@ function Guesses({ songGuesses }) {
 					return (
 						<GuessContainter key={i}>
 							<GuessText />
+						</GuessContainter>
+					)
+				}
+
+				if (guess.id === 'Skipped') {
+					return (
+						<GuessContainter key={i}>
+							<GuessText correct="Skipped">
+								<FaCircleXmark />
+								SKIPPED
+							</GuessText>
 						</GuessContainter>
 					)
 				}
