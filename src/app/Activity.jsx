@@ -92,8 +92,15 @@ export const Activity = () => {
 	const timeoutRef = useRef(null)
 
 	useEffect(() => {
-		setIsGameOver(songGuesses.findIndex((guesses) => guesses === null) === -1 ? true : false)
-	}, [songGuesses])
+		if (isGameOver) return
+
+		const finishedGuesses = songGuesses.every((g) => g !== null)
+		const guessedCorrectly = currentGuessInput === song?.suggestion
+
+		if (finishedGuesses || guessedCorrectly) {
+			setIsGameOver(true)
+		}
+	}, [songGuesses, currentGuessInput, song, isGameOver])
 
 	useEffect(() => {
 		if (!song) return
