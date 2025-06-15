@@ -1,4 +1,6 @@
 import { useEffect, useState, useRef } from 'react'
+import { storage } from '../hooks/useFirebaseSdk'
+import { getStorage, ref, getDownloadURL } from 'firebase/storage'
 import { useDiscordSdk } from '../hooks/useDiscordSdk'
 import NavBar from '../components/NavBar'
 import Guesses from '../components/Guesses'
@@ -80,15 +82,43 @@ export const Activity = () => {
 	const [filteredSuggestions, setFilteredSuggestions] = useState([])
 	const [showSuggestions, setShowSuggestions] = useState(false)
 	const [isPlaying, setIsPlaying] = useState(false)
+	const [isGameOver, setIsGameOver] = useState(false)
 	const [audio, setAudio] = useState(null)
-	const [song, setSong] = useState(null)
+	const [song, setSong] = useState(() => {
+		const songIndex = Math.floor(Math.random() * gachaDestinyData.length)
+		return gachaDestinyData[songIndex]
+	})
 
 	const timeoutRef = useRef(null)
 
 	useEffect(() => {
-		const songIndex = Math.floor(Math.random() * gachaDestinyData.length)
-		setSong(gachaDestinyData[songIndex])
-	}, [])
+		setIsGameOver(songGuesses.findIndex((guesses) => guesses === null) === -1 ? true : false)
+	}, [songGuesses])
+
+	useEffect(() => {
+		if (!song) return
+
+		const loadAudio = async () => {
+			try {
+				const clipUrl = await getDownloadURL(ref(storage, `audio-clips/${song.id}.mp3`))
+				const audioObj = new Audio(clipUrl)
+				audioObj.addEventListener('timeupdate', () => {
+					setSongProgress(audioObj.currentTime)
+
+					if (audioObj.currentTime >= songDuration && !isGameOver) {
+						audioObj.pause()
+						setIsPlaying(false)
+						setSongProgress(songDuration)
+					}
+				})
+				setAudio(audioObj)
+			} catch (e) {
+				console.error('Failed to load audio:', e)
+			}
+		}
+
+		loadAudio()
+	}, [song, songDuration, isGameOver])
 
 	const handleGuesses = (userGuess) => {
 		const findEmptyGuess = songGuesses.findIndex((guesses) => guesses === null)
@@ -167,23 +197,14 @@ export const Activity = () => {
 			<NavBar />
 			<GameWrapper>
 				<Game>
-					{true ? (
+					{!isGameOver ? (
 						<>
 							<GuessesSection>
 								<Guesses songGuesses={songGuesses} song={song} />
 							</GuessesSection>
 							<BottomUI>
 								<SongProgressBar songProgress={songProgress} />
-								<PlaySong
-									songDuration={songDuration}
-									songProgress={songProgress}
-									setSongProgress={setSongProgress}
-									isPlaying={isPlaying}
-									setIsPlaying={setIsPlaying}
-									handleAudio={handleAudio}
-									setAudio={setAudio}
-									song={song}
-								/>
+								<PlaySong songProgress={songProgress} isPlaying={isPlaying} handleAudio={handleAudio} />
 								<SearchBar
 									value={currentGuessInput}
 									onChange={handleSearchChange}
@@ -206,7 +227,7 @@ export const Activity = () => {
 							</BottomUI>
 						</>
 					) : (
-						<GameEnd isPlaying={isPlaying} setIsPlaying={setIsPlaying} handleAudio={handleAudio} />
+						<GameEnd isPlaying={isPlaying} handleAudio={handleAudio} song={song} />
 					)}
 				</Game>
 			</GameWrapper>

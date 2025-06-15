@@ -1,7 +1,3 @@
-import { useRef, useState, useEffect } from 'react'
-import { storage } from '../hooks/useFirebaseSdk'
-import { getStorage, ref, getDownloadURL } from 'firebase/storage'
-import gachaDestinyData from '../util/gachaDestinyData.json'
 import styled from 'styled-components'
 import PlayButton from './PlayButton'
 
@@ -32,41 +28,7 @@ const TimeDisplay = styled.h2`
 	}
 `
 
-function PlaySong({
-	songDuration,
-	songProgress,
-	setSongProgress,
-	isPlaying,
-	setIsPlaying,
-	handleAudio,
-	setAudio,
-	song
-}) {
-	useEffect(() => {
-		if (!song) return
-
-		const loadAudio = async () => {
-			try {
-				const clipUrl = await getDownloadURL(ref(storage, `audio-clips/${song.id}.mp3`))
-				const audioObj = new Audio(clipUrl)
-				const handleTimeUpdate = () => {
-					setSongProgress(audioObj.currentTime)
-					if (audioObj.currentTime >= songDuration) {
-						audioObj.pause()
-						setIsPlaying(false)
-						setSongProgress(songDuration)
-					}
-				}
-				audioObj.addEventListener('timeupdate', handleTimeUpdate)
-				setAudio(audioObj)
-			} catch (e) {
-				console.error('Failed to load audio:', e)
-			}
-		}
-
-		loadAudio()
-	}, [song, songDuration])
-
+function PlaySong({ songProgress, isPlaying, handleAudio }) {
 	return (
 		<StyledContainter>
 			<TimeDisplay>{`0:${String(Math.floor(songProgress)).padStart(2, '0')}`}</TimeDisplay>
