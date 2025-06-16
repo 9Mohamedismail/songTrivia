@@ -116,6 +116,9 @@ export const Activity = () => {
 						audioObj.pause()
 						setIsPlaying(false)
 						setSongProgress(songDuration)
+					} else if (isGameOver && audioObj.currentTime >= audioObj.duration) {
+						audioObj.pause()
+						setIsPlaying(false)
 					}
 				})
 				setAudio(audioObj)
