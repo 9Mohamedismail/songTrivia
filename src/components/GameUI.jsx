@@ -57,17 +57,17 @@ const BottomUI = styled.div`
 function GameUI({
 	songGuesses,
 	songProgress,
+	handleAudio,
+	handleSearchChange,
 	song,
 	currentGuessInput,
-	handleSearchChange,
 	handleSubmit,
+	handleGuesses,
 	filteredSuggestions,
 	showSuggestions,
 	setShowSuggestions,
 	setCurrentGuessInput,
-	handleGuesses,
 	isPlaying,
-	handleAudio,
 	isGameOver
 }) {
 	return (

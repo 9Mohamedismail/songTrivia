@@ -8,9 +8,10 @@ import gachaDestinyData from '../util/gachaDestinyData.json'
 import GameEnd from '../components/GameEnd'
 import GameUI from '../components/GameUI'
 
-import { getChannelPlayers } from '../util/getChannelPlayer'
-import { logPlayerToChannel } from '../util/logPlayerToChannel'
-import { getUserResult } from '../util/getUserResult'
+import { getChannelPlayers } from '../api/getChannelPlayer'
+import { logPlayerToChannel } from '../api/logPlayerToChannel'
+import { getUserResult } from '../api/getUserResult'
+import { createGameLogic } from '../util/gameLogic'
 
 const AppContainer = styled.div`
 	display: flex;
@@ -36,6 +37,11 @@ export const Activity = () => {
 	const [isPlaying, setIsPlaying] = useState(false)
 	const [isGameOver, setIsGameOver] = useState(false)
 	const [audio, setAudio] = useState(null)
+	const { authenticated, discordSdk, session } = useDiscordSdk()
+	const [channelName, setChannelName] = useState()
+	const [avatarSrc, setAvatarSrc] = useState('')
+	const [username, setUsername] = useState('')
+	const [userComplete, setUserComplete] = useState('')
 	const [song, setSong] = useState(() => {
 		const songIndex = Math.floor(Math.random() * gachaDestinyData.length)
 		return gachaDestinyData[songIndex]
@@ -83,65 +89,6 @@ export const Activity = () => {
 
 		loadAudio()
 	}, [song, songDuration, isGameOver])
-
-	const handleGuesses = (userGuess) => {
-		const findEmptyGuess = songGuesses.findIndex((guesses) => guesses === null)
-		if (findEmptyGuess === -1) return
-		const songObject =
-			userGuess === 'Skipped'
-				? {
-						id: 'Skipped',
-						title: 'Skipped',
-						artist: '',
-						genre: '',
-						year: '',
-						album: ''
-					}
-				: gachaDestinyData.find((item) => item.suggestion === userGuess)
-		if (!songObject) return
-		setSongGuesses(songGuesses.map((guess, index) => (index === findEmptyGuess ? songObject : guess)))
-		setSongDuration(songDuration + findEmptyGuess + 1)
-	}
-
-	const handleSearchChange = (val) => {
-		setCurrentGuessInput(val)
-
-		const matches = gachaDestinyData
-			.filter((item) => item.suggestion.toLowerCase().includes(val.toLowerCase()))
-			.map((item) => item.suggestion)
-
-		setFilteredSuggestions(matches)
-		setShowSuggestions(val.trim() !== '' && matches.length > 0)
-	}
-
-	const handleSubmit = () => {
-		handleGuesses(currentGuessInput)
-		setCurrentGuessInput('')
-	}
-
-	const handleAudio = () => {
-		if (!audio) return
-		clearTimeout(timeoutRef.current)
-
-		if (isPlaying) {
-			audio.pause()
-			audio.currentTime = 0
-			setIsPlaying(false)
-			setSongProgress(0)
-		} else {
-			audio.currentTime = 0
-			audio
-				.play()
-				.then(() => setIsPlaying(true))
-				.catch((e) => console.error('Playback error:', e))
-		}
-	}
-
-	const { authenticated, discordSdk, session } = useDiscordSdk()
-	const [channelName, setChannelName] = useState()
-	const [avatarSrc, setAvatarSrc] = useState('')
-	const [username, setUsername] = useState('')
-	const [userComplete, setUserComplete] = useState('')
 
 	useEffect(() => {
 		if (!authenticated || !discordSdk.channelId || !discordSdk.guildId) {
@@ -191,6 +138,21 @@ export const Activity = () => {
 		logPlayerChannel()
 	}, [authenticated, discordSdk])
 
+	const { handleAudio, handleGuesses, handleSearchChange, handleSubmit } = createGameLogic({
+		audio,
+		timeoutRef,
+		isPlaying,
+		setIsPlaying,
+		setSongProgress,
+		setCurrentGuessInput,
+		setFilteredSuggestions,
+		setShowSuggestions,
+		songGuesses,
+		setSongGuesses,
+		songDuration,
+		setSongDuration
+	})
+
 	return (
 		<AppContainer>
 			<NavBar />
@@ -202,19 +164,25 @@ export const Activity = () => {
 				</div>
 			)}
 			<GameUI
+				timeoutRef={timeoutRef}
+				audio={audio}
 				songGuesses={songGuesses}
 				songProgress={songProgress}
+				setSongProgress={setSongProgress}
+				songDuration={songDuration}
+				handleAudio={handleAudio}
+				handleSearchChange={handleSearchChange}
+				handleGuesses={handleGuesses}
+				setFilteredSuggestions={setFilteredSuggestions}
+				setIsPlaying={setIsPlaying}
 				song={song}
 				currentGuessInput={currentGuessInput}
-				handleSearchChange={handleSearchChange}
 				handleSubmit={handleSubmit}
 				filteredSuggestions={filteredSuggestions}
 				showSuggestions={showSuggestions}
 				setShowSuggestions={setShowSuggestions}
 				setCurrentGuessInput={setCurrentGuessInput}
-				handleGuesses={handleGuesses}
 				isPlaying={isPlaying}
-				handleAudio={handleAudio}
 				isGameOver={isGameOver}
 			/>
 		</AppContainer>

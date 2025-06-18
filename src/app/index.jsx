@@ -1,4 +1,4 @@
-import '.././patch-mappings'
+import '../util/patch-mappings'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
