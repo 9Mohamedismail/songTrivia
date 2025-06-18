@@ -12,16 +12,20 @@ import styled from 'styled-components'
 import gachaDestinyData from '../util/gachaDestinyData.json'
 import GameEnd from '../components/GameEnd'
 
+import { getChannelPlayers } from '../util/getChannelPlayer'
+import { logPlayerToChannel } from '../util/logPlayerToChannel'
+import { getUserResult } from '../util/getUserResult'
+
 const AppContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	height: 100vh;
 	height: -webkit-fill-available;
 	width: 100%;
-	padding-top: env(safe-area-inset-top);
-	padding-left: env(safe-area-inset-left);
-	padding-right: env(safe-area-inset-right);
-	padding-bottom: env(safe-area-inset-bottom);
+	padding-left: var(--sail);
+	padding-right: var(--sair);
+	padding-top: var(--sait);
+	padding-bottom: var(--saib);
 	overflow: hidden;
 	background: #f9fafb;
 `
@@ -108,7 +112,9 @@ export const Activity = () => {
 		const loadAudio = async () => {
 			try {
 				const clipUrl = await getDownloadURL(ref(storage, `audio-clips/${song.id}.mp3`))
-				const audioObj = new Audio(clipUrl)
+
+				const rewrittenUrl = clipUrl.replace('https://firebasestorage.googleapis.com', '/firebase')
+				const audioObj = new Audio(rewrittenUrl)
 				audioObj.addEventListener('timeupdate', () => {
 					setSongProgress(audioObj.currentTime)
 
@@ -183,28 +189,70 @@ export const Activity = () => {
 		}
 	}
 
-	const { authenticated, discordSdk, status } = useDiscordSdk()
+	const { authenticated, discordSdk, session } = useDiscordSdk()
 	const [channelName, setChannelName] = useState()
+	const [avatarSrc, setAvatarSrc] = useState('')
+	const [username, setUsername] = useState('')
+	const [userComplete, setUserComplete] = useState('')
 
 	useEffect(() => {
-		// Requesting the channel in GDMs (when the guild ID is null) requires
-		// the dm_channels.read scope which requires Discord approval.
 		if (!authenticated || !discordSdk.channelId || !discordSdk.guildId) {
 			return
 		}
 
-		// Collect channel info over RPC
-		// Enable authentication to see it! (App.jsx)
 		discordSdk.commands.getChannel({ channel_id: discordSdk.channelId }).then((channel) => {
 			if (channel.name) {
 				setChannelName(channel.name)
 			}
 		})
+
+		const user = session?.user
+		if (user) {
+			if (user.avatar) {
+				setAvatarSrc(`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=256`)
+			} else {
+				const defaultAvatarIndex = (BigInt(user.id) >> 22n) % 6n
+				setAvatarSrc(`https://cdn.discordapp.com/embed/avatars/${defaultAvatarIndex}.png`)
+			}
+			setUsername(user.global_name ?? `${user.username}#${user.discriminator}`)
+		}
+		const logPlayerChannel = async () => {
+			try {
+				await logPlayerToChannel(discordSdk.channelId, user.id, {
+					avatar: 'https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=256',
+					discriminator: user.discriminator,
+					username: user.username
+				})
+			} catch (err) {
+				console.error('Failed to log player to channel:', err)
+			}
+		}
+
+		const fetchPlayers = async () => {
+			try {
+				const players = await getChannelPlayers(discordSdk.channelId)
+				console.log(players)
+				console.log(discordSdk.channelId)
+				setUserComplete(players)
+			} catch (err) {
+				console.error('Failed to fetch channel players:', err)
+			}
+		}
+
+		fetchPlayers()
+		logPlayerChannel()
 	}, [authenticated, discordSdk])
 
 	return (
 		<AppContainer>
 			<NavBar />
+			{channelName && <p>Channel: #{channelName}</p>}
+			{username && (
+				<div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+					<img src={avatarSrc} alt="avatar" width={40} height={40} style={{ borderRadius: '50%' }} />
+					<span>{username}</span>
+				</div>
+			)}
 			<GameWrapper>
 				<Game>
 					{!isGameOver ? (
