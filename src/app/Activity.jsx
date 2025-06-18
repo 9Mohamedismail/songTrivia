@@ -3,14 +3,10 @@ import { storage } from '../hooks/useFirebaseSdk'
 import { getStorage, ref, getDownloadURL } from 'firebase/storage'
 import { useDiscordSdk } from '../hooks/useDiscordSdk'
 import NavBar from '../components/NavBar'
-import Guesses from '../components/Guesses'
-import SearchBar from '../components/SearchBar'
-import Footer from '../components/Footer'
-import PlaySong from '../components/PlaySong'
-import SongProgressBar from '../components/SongProgressBar'
 import styled from 'styled-components'
 import gachaDestinyData from '../util/gachaDestinyData.json'
 import GameEnd from '../components/GameEnd'
+import GameUI from '../components/GameUI'
 
 import { getChannelPlayers } from '../util/getChannelPlayer'
 import { logPlayerToChannel } from '../util/logPlayerToChannel'
@@ -28,54 +24,6 @@ const AppContainer = styled.div`
 	padding-bottom: var(--saib);
 	overflow: hidden;
 	background: #f9fafb;
-`
-
-const GameWrapper = styled.div`
-	display: flex;
-	justify-content: center;
-	align-items: flex-end;
-
-	flex: 1;
-	width: 100%;
-	padding: 0 8px;
-	overflow: hidden;
-
-	@media (max-width: 480px) {
-		padding: 0 4px;
-	}
-`
-
-const Game = styled.div`
-	display: flex;
-	flex-direction: column;
-	width: 100%;
-	max-width: 640px;
-	height: 100%;
-	overflow: hidden;
-`
-
-const GuessesSection = styled.div`
-	display: flex;
-	flex-direction: column;
-	flex: 1;
-	width: 100%;
-	min-height: 0;
-	overflow: hidden;
-`
-const BottomUI = styled.div`
-	display: flex;
-	flex-direction: column;
-	width: 100%;
-	flex-shrink: 0;
-	background: white;
-
-	padding: 8px;
-	gap: 4px;
-
-	@media (max-width: 480px) {
-		padding: 6px;
-		gap: 2px;
-	}
 `
 
 export const Activity = () => {
@@ -253,42 +201,22 @@ export const Activity = () => {
 					<span>{username}</span>
 				</div>
 			)}
-			<GameWrapper>
-				<Game>
-					{!isGameOver ? (
-						<>
-							<GuessesSection>
-								<Guesses songGuesses={songGuesses} song={song} />
-							</GuessesSection>
-							<BottomUI>
-								<SongProgressBar songProgress={songProgress} />
-								<PlaySong songProgress={songProgress} isPlaying={isPlaying} handleAudio={handleAudio} />
-								<SearchBar
-									value={currentGuessInput}
-									onChange={handleSearchChange}
-									onSubmit={handleSubmit}
-									filteredSuggestions={filteredSuggestions}
-									showSuggestions={showSuggestions}
-									setShowSuggestions={setShowSuggestions}
-									onSuggestionClick={(val) => {
-										setCurrentGuessInput(val)
-										setShowSuggestions(false)
-									}}
-								/>
-								<Footer
-									onSubmit={handleSubmit}
-									handleSkip={() => {
-										handleGuesses('Skipped')
-									}}
-									numberOfGuesses={songGuesses}
-								/>
-							</BottomUI>
-						</>
-					) : (
-						<GameEnd isPlaying={isPlaying} handleAudio={handleAudio} song={song} />
-					)}
-				</Game>
-			</GameWrapper>
+			<GameUI
+				songGuesses={songGuesses}
+				songProgress={songProgress}
+				song={song}
+				currentGuessInput={currentGuessInput}
+				handleSearchChange={handleSearchChange}
+				handleSubmit={handleSubmit}
+				filteredSuggestions={filteredSuggestions}
+				showSuggestions={showSuggestions}
+				setShowSuggestions={setShowSuggestions}
+				setCurrentGuessInput={setCurrentGuessInput}
+				handleGuesses={handleGuesses}
+				isPlaying={isPlaying}
+				handleAudio={handleAudio}
+				isGameOver={isGameOver}
+			/>
 		</AppContainer>
 	)
 }
