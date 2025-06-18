@@ -1,11 +1,12 @@
 import gachaDestinyData from '../util/gachaDestinyData.json'
 
 export const createGameLogic = ({
-	audio,
+	audioObj,
 	timeoutRef,
 	isPlaying,
 	setIsPlaying,
 	setSongProgress,
+	currentGuessInput,
 	setCurrentGuessInput,
 	setFilteredSuggestions,
 	setShowSuggestions,
@@ -16,17 +17,17 @@ export const createGameLogic = ({
 }) => {
 	// Sets the Audio player to play or pause
 	const handleAudio = () => {
-		if (!audio) return
+		if (!audioObj) return
 		clearTimeout(timeoutRef.current)
 
 		if (isPlaying) {
-			audio.pause()
-			audio.currentTime = 0
+			audioObj.pause()
+			audioObj.currentTime = 0
 			setIsPlaying(false)
 			setSongProgress(0)
 		} else {
-			audio.currentTime = 0
-			audio
+			audioObj.currentTime = 0
+			audioObj
 				.play()
 				.then(() => setIsPlaying(true))
 				.catch((e) => console.error('Playback error:', e))

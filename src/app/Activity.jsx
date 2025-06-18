@@ -36,8 +36,7 @@ export const Activity = () => {
 	const [showSuggestions, setShowSuggestions] = useState(false)
 	const [isPlaying, setIsPlaying] = useState(false)
 	const [isGameOver, setIsGameOver] = useState(false)
-	const [audio, setAudio] = useState(null)
-	const { authenticated, discordSdk, session } = useDiscordSdk()
+	const [audioObj, setAudioObj] = useState(null)
 	const [channelName, setChannelName] = useState()
 	const [avatarSrc, setAvatarSrc] = useState('')
 	const [username, setUsername] = useState('')
@@ -46,6 +45,8 @@ export const Activity = () => {
 		const songIndex = Math.floor(Math.random() * gachaDestinyData.length)
 		return gachaDestinyData[songIndex]
 	})
+	const [loading, setLoading] = useState(true)
+	const [audioReady, setAudioReady] = useState(false)
 
 	const timeoutRef = useRef(null)
 
@@ -60,35 +61,58 @@ export const Activity = () => {
 		}
 	}, [songGuesses, currentGuessInput, song, isGameOver])
 
-	useEffect(() => {
-		if (!song) return
+	const { authenticated, discordSdk, status, session } = useDiscordSdk()
 
-		const loadAudio = async () => {
+	useEffect(() => {
+		setAudioReady(false)
+		const fetchAudio = async () => {
 			try {
 				const clipUrl = await getDownloadURL(ref(storage, `audio-clips/${song.id}.mp3`))
-
-				const rewrittenUrl = clipUrl.replace('https://firebasestorage.googleapis.com', '/firebase')
-				const audioObj = new Audio(rewrittenUrl)
-				audioObj.addEventListener('timeupdate', () => {
-					setSongProgress(audioObj.currentTime)
-
-					if (audioObj.currentTime >= songDuration && !isGameOver) {
-						audioObj.pause()
-						setIsPlaying(false)
-						setSongProgress(songDuration)
-					} else if (isGameOver && audioObj.currentTime >= audioObj.duration) {
-						audioObj.pause()
-						setIsPlaying(false)
-					}
-				})
-				setAudio(audioObj)
+				const discordProxyURL = clipUrl.replace('https://firebasestorage.googleapis.com', '/firebase')
+				const audio = new Audio(discordProxyURL)
+				setAudioObj(audio)
+				audio.load()
 			} catch (e) {
 				console.error('Failed to load audio:', e)
 			}
 		}
+		fetchAudio()
+	}, [song])
 
-		loadAudio()
-	}, [song, songDuration, isGameOver])
+	useEffect(() => {
+		if (!audioObj) return
+
+		const onTime = () => {
+			setSongProgress(audioObj.currentTime)
+
+			if (audioObj.currentTime >= songDuration && !isGameOver) {
+				audioObj.pause()
+				setIsPlaying(false)
+				setSongProgress(songDuration)
+			} else if (isGameOver && audioObj.currentTime >= audioObj.duration) {
+				audioObj.pause()
+				setIsPlaying(false)
+			}
+		}
+
+		const onReady = () => {
+			setAudioReady(true)
+		}
+
+		audioObj.addEventListener('timeupdate', onTime)
+		audioObj.addEventListener('canplaythrough', onReady)
+
+		return () => {
+			audioObj.removeEventListener('timeupdate', onTime)
+			audioObj.removeEventListener('canplaythrough', onReady)
+		}
+	}, [audioObj, status, songDuration, isGameOver])
+
+	useEffect(() => {
+		if (audioReady && status === 'ready') {
+			setLoading(false)
+		}
+	}, [audioReady, status])
 
 	useEffect(() => {
 		if (!authenticated || !discordSdk.channelId || !discordSdk.guildId) {
@@ -139,11 +163,12 @@ export const Activity = () => {
 	}, [authenticated, discordSdk])
 
 	const { handleAudio, handleGuesses, handleSearchChange, handleSubmit } = createGameLogic({
-		audio,
+		audioObj,
 		timeoutRef,
 		isPlaying,
 		setIsPlaying,
 		setSongProgress,
+		currentGuessInput,
 		setCurrentGuessInput,
 		setFilteredSuggestions,
 		setShowSuggestions,
@@ -154,37 +179,43 @@ export const Activity = () => {
 	})
 
 	return (
-		<AppContainer>
-			<NavBar />
-			{channelName && <p>Channel: #{channelName}</p>}
-			{username && (
-				<div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-					<img src={avatarSrc} alt="avatar" width={40} height={40} style={{ borderRadius: '50%' }} />
-					<span>{username}</span>
-				</div>
+		<>
+			{loading ? (
+				<h1> Loading... </h1>
+			) : (
+				<AppContainer>
+					<NavBar />
+					{channelName && <p>Channel: #{channelName}</p>}
+					{username && (
+						<div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+							<img src={avatarSrc} alt="avatar" width={40} height={40} style={{ borderRadius: '50%' }} />
+							<span>{username}</span>
+						</div>
+					)}
+					<GameUI
+						timeoutRef={timeoutRef}
+						audioObj={audioObj}
+						songGuesses={songGuesses}
+						songProgress={songProgress}
+						setSongProgress={setSongProgress}
+						songDuration={songDuration}
+						handleAudio={handleAudio}
+						handleSearchChange={handleSearchChange}
+						handleGuesses={handleGuesses}
+						setFilteredSuggestions={setFilteredSuggestions}
+						setIsPlaying={setIsPlaying}
+						song={song}
+						currentGuessInput={currentGuessInput}
+						handleSubmit={handleSubmit}
+						filteredSuggestions={filteredSuggestions}
+						showSuggestions={showSuggestions}
+						setShowSuggestions={setShowSuggestions}
+						setCurrentGuessInput={setCurrentGuessInput}
+						isPlaying={isPlaying}
+						isGameOver={isGameOver}
+					/>
+				</AppContainer>
 			)}
-			<GameUI
-				timeoutRef={timeoutRef}
-				audio={audio}
-				songGuesses={songGuesses}
-				songProgress={songProgress}
-				setSongProgress={setSongProgress}
-				songDuration={songDuration}
-				handleAudio={handleAudio}
-				handleSearchChange={handleSearchChange}
-				handleGuesses={handleGuesses}
-				setFilteredSuggestions={setFilteredSuggestions}
-				setIsPlaying={setIsPlaying}
-				song={song}
-				currentGuessInput={currentGuessInput}
-				handleSubmit={handleSubmit}
-				filteredSuggestions={filteredSuggestions}
-				showSuggestions={showSuggestions}
-				setShowSuggestions={setShowSuggestions}
-				setCurrentGuessInput={setCurrentGuessInput}
-				isPlaying={isPlaying}
-				isGameOver={isGameOver}
-			/>
-		</AppContainer>
+		</>
 	)
 }
