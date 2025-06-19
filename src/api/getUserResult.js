@@ -1,12 +1,18 @@
-import { collection, getDocs } from 'firebase/firestore'
+import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore'
 import { db } from '../hooks/useFirebaseSdk'
 
 export async function getUserResult(userID) {
-	const ref = collection(db, 'userResults', userID)
-	const snap = await getDocs(ref)
-	if (snap.exists()) {
-		return snap.data()
-	} else {
-		return null
+	const docRef = doc(db, 'userResults', userID)
+	const snap = await getDoc(docRef)
+	if (!snap.exists()) {
+		const initialData = {
+			guesses: Array(6).fill(null),
+			completed: false,
+			lastPlayedAt: serverTimestamp()
+		}
+		await setDoc(docRef, initialData)
+		return initialData
 	}
+
+	return snap.data()
 }

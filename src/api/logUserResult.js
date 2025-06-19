@@ -1,11 +1,10 @@
-import { doc, setDoc } from 'firebase/firestore'
+import { doc, updateDoc, serverTimestamp } from 'firebase/firestore'
 import { db } from '../hooks/useFirebaseSdk'
 
-export async function logUserResult(userId, guessesUsed, result) {
+export async function logUserResult(userId, updateFields) {
 	const ref = doc(db, 'userResults', userId)
-	await setDoc(ref, {
-		guessesUsed: guessesUsed,
-		completed: result,
-		lastPlayedAt: Date.now()
+	await updateDoc(ref, {
+		...updateFields,
+		lastPlayedAt: serverTimestamp()
 	})
 }
