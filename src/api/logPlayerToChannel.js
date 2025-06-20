@@ -1,4 +1,4 @@
-import { doc, getDoc, setDoc } from 'firebase/firestore'
+import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore'
 import { db } from '../hooks/useFirebaseSdk'
 
 export async function logPlayerToChannel(channelId, userId, userInfo) {
@@ -8,7 +8,7 @@ export async function logPlayerToChannel(channelId, userId, userInfo) {
 	if (!snapshot.exists()) {
 		await setDoc(ref, {
 			...userInfo,
-			playedAt: Date.now()
+			playedAt: serverTimestamp()
 		})
 	}
 }

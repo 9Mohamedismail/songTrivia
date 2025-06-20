@@ -39,6 +39,7 @@ export const Activity = () => {
 	const [isGameOver, setIsGameOver] = useState(false)
 	const [audioObj, setAudioObj] = useState(null)
 	const [channelName, setChannelName] = useState()
+	const [channelPlayers, setChannelPlayers] = useState([])
 	const [avatarSrc, setAvatarSrc] = useState('')
 	const [username, setUsername] = useState('')
 	const [userComplete, setUserComplete] = useState('')
@@ -54,6 +55,7 @@ export const Activity = () => {
 
 	const { authenticated, discordSdk, status, session } = useDiscordSdk()
 
+	// Fetch and prepare the audio for the current song
 	useEffect(() => {
 		setAudioReady(false)
 		const fetchAudio = async () => {
@@ -70,12 +72,14 @@ export const Activity = () => {
 		fetchAudio()
 	}, [song])
 
+	// Wire up playback progress & ready events on the Audio object
 	useEffect(() => {
 		if (!audioObj) return
 
 		const onTime = () => {
 			setSongProgress(audioObj.currentTime)
 
+			// Stop at snippet length or end of full file if game over
 			if (audioObj.currentTime >= songDuration && !isGameOver) {
 				audioObj.pause()
 				setIsPlaying(false)
@@ -99,56 +103,7 @@ export const Activity = () => {
 		}
 	}, [audioObj, status, songDuration, isGameOver])
 
-	useEffect(() => {
-		if (status !== 'ready') return
-
-		const fetchData = async () => {
-			const user = session?.user
-			if (user) {
-				if (user.avatar) {
-					setAvatarSrc(`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=256`)
-				} else {
-					const defaultAvatarIndex = (BigInt(user.id) >> 22n) % 6n
-					setAvatarSrc(`https://cdn.discordapp.com/embed/avatars/${defaultAvatarIndex}.png`)
-				}
-				setUsername(user.global_name ?? `${user.username}#${user.discriminator}`)
-			}
-
-			const userData = await getUserResult(user.id)
-
-			if (userData) {
-				setIsGameOver(userData.completed)
-				setSongGuesses(userData.guesses)
-			}
-			setUserDataReady(true)
-		}
-		fetchData()
-	}, [status])
-
-	useEffect(() => {
-		if (audioReady && status === 'ready' && userDataReady) {
-			setLoading(false)
-		}
-	}, [audioReady, status, , userDataReady])
-
-	useEffect(() => {
-		if (status !== 'ready' || !userDataReady) return
-		if (isGameOver) return
-
-		const finishedGuesses = songGuesses.every((g) => g !== null)
-		const guessedCorrectly = songGuesses.some((guess) => guess?.suggestion === song?.suggestion)
-
-		if (finishedGuesses) {
-			setIsGameOver(true)
-			logUserResult(session?.user.id, { completed: true, guesses: songGuesses }, true)
-		} else if (guessedCorrectly) {
-			setIsGameOver(true)
-			logUserResult(session?.user.id, { completed: true, guesses: songGuesses }, true)
-		} else {
-			logUserResult(session?.user.id, { completed: false, guesses: songGuesses }, true)
-		}
-	}, [songGuesses, status, userDataReady])
-
+	// When the session/status is ready, fetch Discord user info & game state
 	useEffect(() => {
 		if (!authenticated || !discordSdk.channelId || !discordSdk.guildId) {
 			return
@@ -160,32 +115,59 @@ export const Activity = () => {
 			}
 		})
 
-		const logPlayerChannel = async () => {
-			try {
-				await logPlayerToChannel(discordSdk.channelId, user.id, {
+		const fetchData = async () => {
+			const user = session?.user
+			if (user) {
+				// Set avatar URL (custom or default)
+				if (user.avatar) {
+					setAvatarSrc(`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=256`)
+				} else {
+					const defaultAvatarIndex = (BigInt(user.id) >> 22n) % 6n
+					setAvatarSrc(`https://cdn.discordapp.com/embed/avatars/${defaultAvatarIndex}.png`)
+				}
+				setUsername(user.global_name ?? `${user.username}#${user.discriminator}`)
+			}
+
+			// Pull this user’s previous game result
+			const userData = await getUserResult(user.id)
+			if (userData) {
+				setIsGameOver(userData.completed)
+				setSongGuesses(userData.guesses)
+			}
+
+			setChannelPlayers(
+				await getChannelPlayers(discordSdk.channelId, user.id, {
 					avatar: 'https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=256',
 					discriminator: user.discriminator,
 					username: user.username
 				})
-			} catch (err) {
-				console.error('Failed to log player to channel:', err)
-			}
+			)
+
+			setUserDataReady(true)
 		}
 
-		const fetchPlayers = async () => {
-			try {
-				const players = await getChannelPlayers(discordSdk.channelId)
-				console.log(players)
-				console.log(discordSdk.channelId)
-				setUserComplete(players)
-			} catch (err) {
-				console.error('Failed to fetch channel players:', err)
-			}
-		}
+		fetchData()
+	}, [status])
 
-		fetchPlayers()
-		logPlayerChannel()
-	}, [authenticated, discordSdk])
+	// Turn off the loading spinner once everything critical is ready
+	useEffect(() => {
+		if (audioReady && status === 'ready' && userDataReady) {
+			setLoading(false)
+		}
+	}, [audioReady, status, userDataReady])
+
+	// Watch the guesses array to detect game completion & persist progress
+	useEffect(() => {
+		if (status !== 'ready' || !userDataReady) return
+		if (isGameOver) return
+
+		const finished = songGuesses.every((g) => g !== null)
+		const correct = songGuesses.some((g) => g?.suggestion === song?.suggestion)
+		const completed = finished || correct
+
+		if (completed) setIsGameOver(true)
+		logUserResult(session?.user.id, { completed, guesses: songGuesses })
+	}, [songGuesses, status, userDataReady])
 
 	const { handleAudio, handleGuesses, handleSearchChange, handleSubmit } = createGameLogic({
 		audioObj,
@@ -217,6 +199,7 @@ export const Activity = () => {
 							<span>{username}</span>
 						</div>
 					)}
+					{channelPlayers && <p>Channel Players: {channelPlayers.map((players) => players.username)}</p>}
 					<GameUI
 						timeoutRef={timeoutRef}
 						audioObj={audioObj}
