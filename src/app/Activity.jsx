@@ -137,7 +137,7 @@ export const Activity = () => {
 
 			setChannelPlayers(
 				await getChannelPlayers(discordSdk.channelId, user.id, {
-					avatar: 'https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=256',
+					avatar: `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=256`,
 					discriminator: user.discriminator,
 					username: user.username
 				})
@@ -221,6 +221,7 @@ export const Activity = () => {
 						setCurrentGuessInput={setCurrentGuessInput}
 						isPlaying={isPlaying}
 						isGameOver={isGameOver}
+						channelPlayers={channelPlayers}
 					/>
 				</AppContainer>
 			)}

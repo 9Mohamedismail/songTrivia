@@ -6,9 +6,11 @@ export async function logPlayerToChannel(channelId, userId, userInfo) {
 	const snapshot = await getDoc(ref)
 
 	if (!snapshot.exists()) {
+		const resultRef = doc(db, 'userResults', userId)
 		await setDoc(ref, {
 			...userInfo,
-			playedAt: serverTimestamp()
+			resultRef,
+			joinedAt: serverTimestamp()
 		})
 	}
 }

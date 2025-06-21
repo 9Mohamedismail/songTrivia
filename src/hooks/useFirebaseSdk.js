@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app'
-import { getFirestore } from 'firebase/firestore'
+import { initializeFirestore } from 'firebase/firestore'
 import { getStorage } from 'firebase/storage'
 
 export const firebaseConfig = {
@@ -15,7 +15,12 @@ export const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig)
-const db = getFirestore(app)
+const db = initializeFirestore(app, {
+	// Forces HTTP long-polling instead of websockets
+	experimentalForceLongPolling: true,
+	// (sometimes needed in React Native/iOS webviews)
+	useFetchStreams: false
+})
 const storage = getStorage(app)
 
 export { db, storage }

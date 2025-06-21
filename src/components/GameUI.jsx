@@ -4,6 +4,7 @@ import PlaySong from './PlaySong'
 import SearchBar from './SearchBar'
 import Footer from './Footer'
 import GameEnd from './GameEnd'
+import PlayerGame from '../components/PlayerGame'
 import styled from 'styled-components'
 
 const GameWrapper = styled.div`
@@ -68,7 +69,8 @@ function GameUI({
 	setShowSuggestions,
 	setCurrentGuessInput,
 	isPlaying,
-	isGameOver
+	isGameOver,
+	channelPlayers
 }) {
 	return (
 		<GameWrapper>
@@ -103,7 +105,10 @@ function GameUI({
 						</BottomUI>
 					</>
 				) : (
-					<GameEnd isPlaying={isPlaying} handleAudio={handleAudio} song={song} />
+					<>
+						<GameEnd isPlaying={isPlaying} handleAudio={handleAudio} song={song} />
+						<PlayerGame isPlaying={isPlaying} handleAudio={handleAudio} song={song} channelPlayers={channelPlayers} />
+					</>
 				)}
 			</Game>
 		</GameWrapper>
