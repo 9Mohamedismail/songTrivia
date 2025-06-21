@@ -11,7 +11,6 @@ const GameWrapper = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: flex-end;
-
 	flex: 1;
 	width: 100%;
 	padding: 0 8px;
@@ -75,6 +74,7 @@ function GameUI({
 	return (
 		<GameWrapper>
 			<Game>
+				<PlayerGame song={song} channelPlayers={channelPlayers} />
 				{!isGameOver ? (
 					<>
 						<GuessesSection>
@@ -107,7 +107,6 @@ function GameUI({
 				) : (
 					<>
 						<GameEnd isPlaying={isPlaying} handleAudio={handleAudio} song={song} />
-						<PlayerGame isPlaying={isPlaying} handleAudio={handleAudio} song={song} channelPlayers={channelPlayers} />
 					</>
 				)}
 			</Game>

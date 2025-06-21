@@ -1,5 +1,10 @@
 import styled from 'styled-components'
-import PlayButton from './PlayButton'
+
+const PlayersWrapper = styled.div`
+	display: flex;
+	flex-direction: row;
+	gap: 16px;
+`
 
 const StyledSongContainter = styled.div`
 	display: flex;
@@ -42,7 +47,7 @@ const StyledResult = styled.td`
 	padding: 4px;
 `
 
-function PlayerGame({ isPlaying, handleAudio, song, channelPlayers }) {
+function PlayerGame({ song, channelPlayers }) {
 	console.log(channelPlayers)
 
 	const getResult = (guess, field) => {
@@ -52,7 +57,7 @@ function PlayerGame({ isPlaying, handleAudio, song, channelPlayers }) {
 	}
 
 	return (
-		<>
+		<PlayersWrapper>
 			{channelPlayers &&
 				channelPlayers.map((player) => {
 					return (
@@ -75,7 +80,7 @@ function PlayerGame({ isPlaying, handleAudio, song, channelPlayers }) {
 						</StyledSongContainter>
 					)
 				})}
-		</>
+		</PlayersWrapper>
 	)
 }
 

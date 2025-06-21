@@ -5,8 +5,10 @@ import { useDiscordSdk } from '../hooks/useDiscordSdk'
 import NavBar from '../components/NavBar'
 import styled from 'styled-components'
 import gachaDestinyData from '../util/gachaDestinyData.json'
-import GameEnd from '../components/GameEnd'
+import PlayerGame from '../components/PlayerGame'
 import GameUI from '../components/GameUI'
+import { onSnapshot, collection, getDoc } from 'firebase/firestore'
+import { db } from '../hooks/useFirebaseSdk'
 
 import { getChannelPlayers } from '../api/getChannelPlayer'
 import { logPlayerToChannel } from '../api/logPlayerToChannel'
@@ -149,6 +151,28 @@ export const Activity = () => {
 		fetchData()
 	}, [status])
 
+	useEffect(() => {
+		if (!authenticated || !discordSdk.channelId) return
+		setChannelPlayers([])
+		const unsubscribe = onSnapshot(collection(db, 'channelPlayers', discordSdk.channelId, 'players'), (snapshot) => {
+			snapshot.docChanges().forEach((change) => {
+				const docSnap = change.doc
+				const base = docSnap.data()
+				getDoc(base.resultRef).then((resultSnap) => {
+					const newEntry = { id: docSnap.id, ...base, ...resultSnap.data() }
+
+					if (change.type === 'added') {
+						setChannelPlayers((prev) => [...prev, newEntry])
+					} else if (change.type === 'modified') {
+						setChannelPlayers((prev) => prev.map((p) => (p.id === newEntry.id ? newEntry : p)))
+					}
+				})
+			})
+		})
+
+		return () => unsubscribe()
+	}, [authenticated, discordSdk.channelId])
+
 	// Turn off the loading spinner once everything critical is ready
 	useEffect(() => {
 		if (audioReady && status === 'ready' && userDataReady) {
@@ -192,14 +216,6 @@ export const Activity = () => {
 			) : (
 				<AppContainer>
 					<NavBar />
-					{channelName && <p>Channel: #{channelName}</p>}
-					{username && (
-						<div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-							<img src={avatarSrc} alt="avatar" width={40} height={40} style={{ borderRadius: '50%' }} />
-							<span>{username}</span>
-						</div>
-					)}
-					{channelPlayers && <p>Channel Players: {channelPlayers.map((players) => players.username)}</p>}
 					<GameUI
 						timeoutRef={timeoutRef}
 						audioObj={audioObj}
