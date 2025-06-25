@@ -22,17 +22,15 @@ const GuessContainter = styled.div`
 	border: 1px solid;
 	width: 100%;
 	max-width: 640px;
-	min-height: 40px;
+	min-height: 48px;
 	padding: 6px;
 	border-radius: 6px;
 	align-items: center;
 	box-sizing: border-box;
 	gap: 8px;
 
-	@media (max-width: 480px) {
-		min-height: 36px;
-		padding: 4px;
-		gap: 4px;
+	@media only screen and (max-width: 719px) {
+		min-height: 48px;
 	}
 `
 
@@ -54,18 +52,14 @@ const GuessText = styled.h1`
 		height: 14px;
 	}
 
-	@media (max-width: 480px) {
-		font-size: 12px;
-		gap: 3px;
+	@media only screen and (max-width: 719px) {
+		font-size: 16px;
 
 		svg {
-			width: 12px;
-			height: 12px;
+			flex-shrink: 0;
+			width: 16px;
+			height: 16px;
 		}
-	}
-
-	@media (max-width: 360px) {
-		font-size: 11px;
 	}
 `
 

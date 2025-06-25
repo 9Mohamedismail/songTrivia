@@ -19,15 +19,18 @@ import { logUserResult } from '../api/logUserResult'
 const AppContainer = styled.div`
 	display: flex;
 	flex-direction: column;
-	height: 100vh;
-	height: -webkit-fill-available;
 	width: 100%;
-	padding-left: var(--sail);
-	padding-right: var(--sair);
-	padding-top: var(--sait);
-	padding-bottom: var(--saib);
+	padding: var(--sait) var(--sair) var(--saib) var(--sail);
 	overflow: hidden;
-	background: #f9fafb;
+	background: white;
+
+	@media (min-width: 720px) {
+		height: -webkit-fill-available;
+		max-width: 1280px;
+		margin: 0 auto;
+		aspect-ratio: 16 / 9;
+		height: 100vh;
+	}
 `
 
 export const Activity = () => {
@@ -210,11 +213,11 @@ export const Activity = () => {
 	})
 
 	return (
-		<>
+		<AppContainer>
 			{loading ? (
 				<h1> Loading... </h1>
 			) : (
-				<AppContainer>
+				<>
 					<NavBar />
 					<GameUI
 						timeoutRef={timeoutRef}
@@ -239,8 +242,8 @@ export const Activity = () => {
 						isGameOver={isGameOver}
 						channelPlayers={channelPlayers}
 					/>
-				</AppContainer>
+				</>
 			)}
-		</>
+		</AppContainer>
 	)
 }

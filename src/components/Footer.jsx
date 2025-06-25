@@ -25,6 +25,12 @@ const StyledButton = styled.button`
 	cursor: pointer;
 	transition: all 0.2s ease;
 	flex: 1;
+
+	@media only screen and (max-width: 719px) {
+		padding: 12px 16px;
+		height: 48px;
+		font-size: 16px;
+	}
 `
 
 function Footer({ onSubmit, handleSkip, numberOfGuesses }) {

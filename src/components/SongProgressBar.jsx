@@ -10,9 +10,8 @@ const StyledContainter = styled.div`
 	overflow: hidden;
 	background: #f9fafb;
 
-	@media (max-width: 480px) {
-		height: 20px;
-		margin-bottom: 8px;
+	@media only screen and (max-width: 719px) {
+		height: 28px;
 	}
 `
 
@@ -29,11 +28,8 @@ const Tick = styled.div`
 	background-color: #374151;
 	left: ${(props) => props.left}%;
 	z-index: 10;
-
-	@media (max-width: 480px) {
-		width: 1px;
-	}
 `
+
 function SongProgressBar({ songProgress }) {
 	const totalSeconds = 16
 	const progressBarTicks = [1, 2, 4, 7, 11, 16]

@@ -2,11 +2,18 @@ import styled from 'styled-components'
 
 const PlayersWrapper = styled.div`
 	display: flex;
-	flex-direction: row;
+	flex-direction: column;
 	gap: 16px;
+
+	@media only screen and (max-width: 719px) {
+		flex-direction: row;
+		width: 100%;
+		overflow-x: auto;
+		padding: 0 4px;
+	}
 `
 
-const StyledSongContainter = styled.div`
+const StyledContainter = styled.div`
 	display: flex;
 	justify-content: center;
 	border: 1px solid;
@@ -18,18 +25,13 @@ const StyledSongContainter = styled.div`
 	max-width: 150px;
 	min-height: 40px;
 	padding: 12px;
-
-	@media (max-width: 480px) {
-		min-height: 36px;
-		padding: 4px;
-	}
 `
-const SongImage = styled.img`
+const PlayerImage = styled.img`
 	width: 50px;
 	height: 50px;
 `
 
-const SongInfo = styled.div`
+const PlayerInfo = styled.div`
 	display: flex;
 	flex-direction: column;
 `
@@ -61,9 +63,9 @@ function PlayerGame({ song, channelPlayers }) {
 			{channelPlayers &&
 				channelPlayers.map((player) => {
 					return (
-						<StyledSongContainter>
-							<SongImage src={player.avatar} />
-							<SongInfo>
+						<StyledContainter>
+							<PlayerImage src={player.avatar} />
+							<PlayerInfo>
 								<table>
 									<tbody>
 										{player.guesses.map((guess, i) => (
@@ -76,8 +78,8 @@ function PlayerGame({ song, channelPlayers }) {
 										))}
 									</tbody>
 								</table>
-							</SongInfo>
-						</StyledSongContainter>
+							</PlayerInfo>
+						</StyledContainter>
 					)
 				})}
 		</PlayersWrapper>

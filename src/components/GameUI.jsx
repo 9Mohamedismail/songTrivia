@@ -10,13 +10,14 @@ import styled from 'styled-components'
 const GameWrapper = styled.div`
 	display: flex;
 	justify-content: center;
-	align-items: flex-end;
+	align-items: flex-start;
 	flex: 1;
 	width: 100%;
 	padding: 0 8px;
 	overflow: hidden;
 
-	@media (max-width: 480px) {
+	@media only screen and (max-width: 719px) {
+		flex-direction: column;
 		padding: 0 4px;
 	}
 `
@@ -26,8 +27,6 @@ const Game = styled.div`
 	flex-direction: column;
 	width: 100%;
 	max-width: 640px;
-	height: 100%;
-	overflow: hidden;
 `
 
 const GuessesSection = styled.div`
@@ -47,11 +46,6 @@ const BottomUI = styled.div`
 
 	padding: 8px;
 	gap: 4px;
-
-	@media (max-width: 480px) {
-		padding: 6px;
-		gap: 2px;
-	}
 `
 
 function GameUI({
@@ -73,8 +67,8 @@ function GameUI({
 }) {
 	return (
 		<GameWrapper>
+			<PlayerGame song={song} channelPlayers={channelPlayers} />
 			<Game>
-				<PlayerGame song={song} channelPlayers={channelPlayers} />
 				{!isGameOver ? (
 					<>
 						<GuessesSection>

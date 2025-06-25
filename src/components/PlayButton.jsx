@@ -29,11 +29,6 @@ const MediaWrapper = styled.div`
 		height: 100%;
 		color: #374151;
 	}
-
-	@media (max-width: 480px) {
-		width: 56px;
-		height: 56px;
-	}
 `
 
 function PlayButton({ handleAudio, isPlaying }) {

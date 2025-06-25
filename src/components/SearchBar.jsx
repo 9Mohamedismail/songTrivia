@@ -7,11 +7,6 @@ const StyledContainter = styled.div`
 	justify-content: center;
 	margin-top: 12px;
 	padding: 0 8px;
-
-	@media (max-width: 480px) {
-		padding: 0 4px;
-		margin-top: 8px;
-	}
 `
 const InputWrapper = styled.div`
 	position: relative;
@@ -27,6 +22,10 @@ const StyledIcon = styled(IoSearchOutline)`
 	color: #6b7280;
 	font-size: 20px;
 	pointer-events: none;
+
+	@media only screen and (max-width: 719px) {
+		font-size: 24px;
+	}
 `
 
 const StyledInput = styled.input`
@@ -36,6 +35,10 @@ const StyledInput = styled.input`
 	border: 1px solid;
 	padding: 12px 16px 12px 36px;
 	box-sizing: border-box;
+
+	@media only screen and (max-width: 719px) {
+		padding: 16px 20px 16px 40px;
+	}
 `
 const SuggestionsList = styled.ul`
 	position: absolute;
@@ -75,11 +78,6 @@ const SuggestionItem = styled.li`
 
 	&:last-child {
 		border-bottom: none;
-	}
-
-	@media (max-width: 480px) {
-		padding: 10px;
-		font-size: 13px;
 	}
 `
 
