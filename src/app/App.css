@@ -18,11 +18,17 @@ body {
 	background-color: white;
 }
 
+@font-face {
+	font-family: BebasNeue;
+	src: url(../../public/fonts/BebasNeue-Regular.ttf);
+}
+
 *,
 *::before,
 *::after {
 	box-sizing: inherit;
 	font-family:
+		BebasNeue,
 		IBM Plex Mono,
 		Noto Sans Mono Variable,
 		Noto Sans Mono,

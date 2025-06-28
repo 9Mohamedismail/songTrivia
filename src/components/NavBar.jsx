@@ -5,7 +5,7 @@ import { AiOutlineExclamationCircle } from 'react-icons/ai'
 
 const StyledNav = styled.div`
 	width: 100%;
-	border-bottom: 2px solid #e5e5e5;
+	border-bottom: 4px solid #383838;
 	padding: 16px 0;
 	box-sizing: border-box;
 	display: flex;
@@ -21,6 +21,7 @@ const StyledNav = styled.div`
 	}
 `
 const NavContent = styled.div`
+	position: relative;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -48,14 +49,21 @@ const NavText = styled.span`
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	font-size: 24px;
+	font-size: 36px;
 	line-height: 1.5;
+	letter-spacing: 8px;
 	cursor: pointer;
 	font-weight: 600;
 
 	@media only screen and (max-width: 719px) {
 		font-size: clamp(26px, 6vw, 40px);
 	}
+`
+
+const Title = styled(NavText)`
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
 `
 
 function NavBar() {
@@ -65,7 +73,7 @@ function NavBar() {
 				<NavText>
 					<AiOutlineExclamationCircle />
 				</NavText>
-				<NavText> SongTrivia</NavText>
+				<Title>SONGTRIVIA</Title>
 				<NavItems>
 					<NavText>
 						<RxQuestionMarkCircled />

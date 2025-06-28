@@ -2,11 +2,11 @@ import styled from 'styled-components'
 
 const StyledContainter = styled.div`
 	display: flex;
-	border: 1px solid;
+	border-radius: 4px;
+	border: solid #383838;
 	margin-bottom: 12px;
 	height: 24px;
 	position: relative;
-	border-radius: 4px;
 	overflow: hidden;
 	background: #f9fafb;
 

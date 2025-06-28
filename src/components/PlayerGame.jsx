@@ -16,8 +16,8 @@ const PlayersWrapper = styled.div`
 const StyledContainter = styled.div`
 	display: flex;
 	justify-content: center;
-	border: 1px solid;
-	border-radius: 6px;
+	border-radius: 11px;
+	border: solid #383838;
 	box-sizing: border-box;
 	align-items: center;
 	margin-top: 20px;
@@ -39,12 +39,12 @@ const StyledResult = styled.td`
 	background-color: ${
 		(p) =>
 			p.correct == null
-				? 'blue' // no guess
+				? 'gray' // no guess
 				: p.correct === 'skipped'
-					? '#1e293b' // skipped
+					? 'black' // skipped
 					: p.correct
-						? '#059669' // correct
-						: '#dc2626' // wrong
+						? 'green' // correct
+						: 'red' // wrong
 	};
 	padding: 4px;
 `

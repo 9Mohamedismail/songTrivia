@@ -29,10 +29,10 @@ const StyledIcon = styled(IoSearchOutline)`
 `
 
 const StyledInput = styled.input`
-	font-size: 16px;
+	font-size: 20px;
 	width: 100%;
-	border-radius: 8px;
-	border: 1px solid;
+	border-radius: 11px;
+	border: solid #383838;
 	padding: 12px 16px 12px 36px;
 	box-sizing: border-box;
 

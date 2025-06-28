@@ -12,7 +12,7 @@ const StyledContainter = styled.div`
 `
 
 const TimeDisplay = styled.h2`
-	font-size: 18px;
+	font-size: 36px;
 	margin: 0;
 	font-weight: 500;
 	color: #374151;

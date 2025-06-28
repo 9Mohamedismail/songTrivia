@@ -17,10 +17,10 @@ const StyledButton = styled.button`
 	height: 44px;
 	min-height: 44px;
 	padding: 8px 12px;
-	border-radius: 8px;
-	border: 1px solid #383838;
+	border-radius: 11px;
+	border: solid #383838;
 	background: white;
-	font-size: 14px;
+	font-size: 20px;
 	font-weight: 500;
 	cursor: pointer;
 	transition: all 0.2s ease;
@@ -40,6 +40,7 @@ function Footer({ onSubmit, handleSkip, numberOfGuesses }) {
 				<StyledButton onClick={handleSkip}>
 					Skip (+{numberOfGuesses.findIndex((guesses) => guesses === null) + 1}s)
 				</StyledButton>
+
 				<StyledButton onClick={onSubmit}>Submit</StyledButton>
 			</FooterContent>
 		</StyledFooter>

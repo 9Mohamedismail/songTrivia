@@ -19,12 +19,12 @@ const StyledContainter = styled.div`
 const GuessContainter = styled.div`
 	display: flex;
 	flex-wrap: wrap;
-	border: 1px solid;
+	border-radius: 11px;
+	border: solid #383838;
 	width: 100%;
 	max-width: 640px;
 	min-height: 48px;
 	padding: 6px;
-	border-radius: 6px;
 	align-items: center;
 	box-sizing: border-box;
 	gap: 8px;
@@ -37,8 +37,13 @@ const GuessContainter = styled.div`
 const GuessText = styled.h1`
 	display: flex;
 	align-items: center;
-	font-size: 14px;
+	font-size: 16px;
 	margin: 0;
+	font-family:
+		IBM Plex Mono,
+		Noto Sans Mono Variable,
+		Noto Sans Mono,
+		monospace;
 	line-height: 1.3;
 	gap: 4px;
 	color: ${(props) => (props.correct === 'Skipped' ? '#1e293b' : props.correct ? '#059669' : '#dc2626')};
