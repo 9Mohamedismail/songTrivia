@@ -154,26 +154,44 @@ export const Activity = () => {
 		fetchData()
 	}, [status])
 
+	const resultUnsubs = useRef(new Map())
+
 	useEffect(() => {
 		if (!authenticated || !discordSdk.channelId) return
 		setChannelPlayers([])
-		const unsubscribe = onSnapshot(collection(db, 'channelPlayers', discordSdk.channelId, 'players'), (snapshot) => {
-			snapshot.docChanges().forEach((change) => {
-				const docSnap = change.doc
-				const base = docSnap.data()
-				getDoc(base.resultRef).then((resultSnap) => {
-					const newEntry = { id: docSnap.id, ...base, ...resultSnap.data() }
+		resultUnsubs.current.forEach((unsub) => unsub())
+		resultUnsubs.current.clear()
+		const unsubscribeChannel = onSnapshot(
+			collection(db, 'channelPlayers', discordSdk.channelId, 'players'),
+			(snapshot) => {
+				snapshot.docChanges().forEach((change) => {
+					const docSnap = change.doc
+					const id = docSnap.id
+					const baseData = docSnap.data()
 
 					if (change.type === 'added') {
-						setChannelPlayers((prev) => [...prev, newEntry])
-					} else if (change.type === 'modified') {
-						setChannelPlayers((prev) => prev.map((p) => (p.id === newEntry.id ? newEntry : p)))
+						setChannelPlayers((prev) => [...prev, { id, ...baseData }])
+						if (baseData.resultRef) {
+							const unsubResult = onSnapshot(baseData.resultRef, (resultSnap) => {
+								const merged = {
+									id,
+									...baseData,
+									...resultSnap.data()
+								}
+
+								setChannelPlayers((prev) => prev.map((p) => (p.id === id ? merged : p)))
+							})
+							resultUnsubs.current.set(id, unsubResult)
+						}
 					}
 				})
-			})
-		})
-
-		return () => unsubscribe()
+			}
+		)
+		return () => {
+			unsubscribeChannel()
+			resultUnsubs.current.forEach((unsub) => unsub())
+			resultUnsubs.current.clear()
+		}
 	}, [authenticated, discordSdk.channelId])
 
 	// Turn off the loading spinner once everything critical is ready
