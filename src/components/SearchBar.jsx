@@ -24,7 +24,7 @@ const StyledIcon = styled(IoSearchOutline)`
 	pointer-events: none;
 
 	@media only screen and (max-width: 719px) {
-		font-size: 24px;
+		font-size: 16px;
 	}
 `
 
@@ -37,7 +37,8 @@ const StyledInput = styled.input`
 	box-sizing: border-box;
 
 	@media only screen and (max-width: 719px) {
-		padding: 16px 20px 16px 40px;
+		padding: 8px 12px 8px 36px;
+		font-size: 20px;
 	}
 `
 const SuggestionsList = styled.ul`
@@ -56,9 +57,6 @@ const SuggestionsList = styled.ul`
 	margin: 0;
 	z-index: 50;
 	box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1);
-	@media (max-width: 480px) {
-		max-height: 120px;
-	}
 `
 
 const SuggestionItem = styled.li`

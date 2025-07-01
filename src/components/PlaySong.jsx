@@ -9,6 +9,10 @@ const StyledContainter = styled.div`
 	max-width: 640px;
 	padding: 12px;
 	box-sizing: border-box;
+
+	@media only screen and (max-width: 719px) {
+		padding: 8px;
+	}
 `
 
 const TimeDisplay = styled.h2`

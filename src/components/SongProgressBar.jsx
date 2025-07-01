@@ -11,7 +11,7 @@ const StyledContainter = styled.div`
 	background: #f9fafb;
 
 	@media only screen and (max-width: 719px) {
-		height: 28px;
+		height: 20px;
 	}
 `
 

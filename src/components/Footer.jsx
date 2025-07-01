@@ -27,9 +27,9 @@ const StyledButton = styled.button`
 	flex: 1;
 
 	@media only screen and (max-width: 719px) {
-		padding: 12px 16px;
-		height: 48px;
-		font-size: 16px;
+		padding: 4px 8px;
+		height: 40px;
+		font-size: 24px;
 	}
 `
 

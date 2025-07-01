@@ -25,10 +25,21 @@ const StyledContainter = styled.div`
 	max-width: 150px;
 	min-height: 40px;
 	padding: 12px;
+
+	@media only screen and (max-width: 719px) {
+		gap: 12px;
+		padding: 8px;
+		margin-top: 16px;
+	}
 `
 const PlayerImage = styled.img`
 	width: 50px;
 	height: 50px;
+
+	@media only screen and (max-width: 719px) {
+		width: 40px;
+		height: 40px;
+	}
 `
 
 const PlayerInfo = styled.div`

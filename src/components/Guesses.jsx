@@ -12,7 +12,7 @@ const StyledContainter = styled.div`
 	width: 100%;
 	padding: 0 12px;
 
-	@media (max-width: 480px) {
+	@media only screen and (max-width: 719px) {
 		padding: 0 8px;
 	}
 `
@@ -30,7 +30,7 @@ const GuessContainter = styled.div`
 	gap: 8px;
 
 	@media only screen and (max-width: 719px) {
-		min-height: 48px;
+		min-height: 40px;
 	}
 `
 
