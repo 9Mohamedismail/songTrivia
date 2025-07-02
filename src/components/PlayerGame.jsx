@@ -59,7 +59,7 @@ const GuessGrid = styled.div`
 
 const GuessCell = styled.div`
 	background-color: ${(p) =>
-		p.correct == null ? 'gray' : p.correct === 'skipped' ? 'black' : p.correct ? 'green' : 'red'};
+		p.correct == null ? 'gray' : p.correct === 'skipped' ? '#1e293b' : p.correct ? '#059669' : '#dc2626'};
 	min-height: 8px;
 	min-width: 8px;
 `
