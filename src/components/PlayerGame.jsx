@@ -8,8 +8,11 @@ const PlayersWrapper = styled.div`
 	@media only screen and (max-width: 719px) {
 		flex-direction: row;
 		width: 100%;
-		overflow-x: auto;
 		padding: 0 4px;
+
+		@media (max-height: 719px) {
+			display: none;
+		}
 	}
 `
 
@@ -46,20 +49,20 @@ const PlayerInfo = styled.div`
 	display: flex;
 	flex-direction: column;
 `
-const StyledResult = styled.td`
-	background-color: ${
-		(p) =>
-			p.correct == null
-				? 'gray' // no guess
-				: p.correct === 'skipped'
-					? 'black' // skipped
-					: p.correct
-						? 'green' // correct
-						: 'red' // wrong
-	};
-	padding: 4px;
+
+const GuessGrid = styled.div`
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 1px;
+	width: 100%;
 `
 
+const GuessCell = styled.div`
+	background-color: ${(p) =>
+		p.correct == null ? 'gray' : p.correct === 'skipped' ? 'black' : p.correct ? 'green' : 'red'};
+	min-height: 8px;
+	min-width: 8px;
+`
 function PlayerGame({ song, channelPlayers }) {
 	console.log(channelPlayers)
 
@@ -77,18 +80,14 @@ function PlayerGame({ song, channelPlayers }) {
 						<StyledContainter>
 							<PlayerImage src={player.avatar} />
 							<PlayerInfo>
-								<table>
-									<tbody>
-										{player.guesses.map((guess, i) => (
-											<tr key={i}>
-												<StyledResult correct={getResult(guess, 'artist')}></StyledResult>
-												<StyledResult correct={getResult(guess, 'title')}></StyledResult>
-												<StyledResult correct={getResult(guess, 'genre')}></StyledResult>
-												<StyledResult correct={getResult(guess, 'year')}></StyledResult>
-											</tr>
-										))}
-									</tbody>
-								</table>
+								<GuessGrid>
+									{player.guesses.flatMap((guess, i) => [
+										<GuessCell key={`${i}-artist`} correct={getResult(guess, 'artist')} />,
+										<GuessCell key={`${i}-title`} correct={getResult(guess, 'title')} />,
+										<GuessCell key={`${i}-genre`} correct={getResult(guess, 'genre')} />,
+										<GuessCell key={`${i}-year`} correct={getResult(guess, 'year')} />
+									])}
+								</GuessGrid>
 							</PlayerInfo>
 						</StyledContainter>
 					)

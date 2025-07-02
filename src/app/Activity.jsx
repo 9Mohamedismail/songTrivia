@@ -31,20 +31,6 @@ const AppContainer = styled.div`
 		aspect-ratio: 16 / 9;
 		height: 100vh;
 	}
-
-	
-@media only screen and (max-width: 600px) {...}
-
-
-@media only screen and (min-width: 600px) {...}
-
-@media only screen and (min-width: 768px) {...}
-
-
-@media only screen and (min-width: 992px) {...}
-
-
-@media only screen and (min-width: 1200px) {...}
 `
 
 export const Activity = () => {
