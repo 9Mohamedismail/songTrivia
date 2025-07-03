@@ -5,14 +5,14 @@ const PlayersWrapper = styled.div`
 	flex-direction: column;
 	gap: 16px;
 
-	@media only screen and (max-width: 719px) {
+	@media (max-width: 479px) {
 		flex-direction: row;
 		width: 100%;
-		padding: 0 4px;
+		overflow-x: auto;
+		white-space: nowrap;
+	}
 
-		@media (max-height: 719px) {
-			display: none;
-		}
+	@media (min-width: 480px) and (max-width: 1023px) {
 	}
 `
 
@@ -29,19 +29,25 @@ const StyledContainter = styled.div`
 	min-height: 40px;
 	padding: 12px;
 
-	@media only screen and (max-width: 719px) {
+	@media (max-width: 479px) {
 		gap: 12px;
-		padding: 8px;
+		padding: 12px;
 		margin-top: 16px;
+	}
+
+	@media (min-width: 480px) and (max-width: 1023px) {
 	}
 `
 const PlayerImage = styled.img`
 	width: 50px;
 	height: 50px;
 
-	@media only screen and (max-width: 719px) {
-		width: 40px;
-		height: 40px;
+	@media (max-width: 479px) {
+		width: 50px;
+		height: 50px;
+	}
+
+	@media (min-width: 480px) and (max-width: 1023px) {
 	}
 `
 
@@ -74,6 +80,60 @@ function PlayerGame({ song, channelPlayers }) {
 
 	return (
 		<PlayersWrapper>
+			{channelPlayers &&
+				channelPlayers.map((player) => {
+					return (
+						<StyledContainter>
+							<PlayerImage src={player.avatar} />
+							<PlayerInfo>
+								<GuessGrid>
+									{player.guesses.flatMap((guess, i) => [
+										<GuessCell key={`${i}-artist`} correct={getResult(guess, 'artist')} />,
+										<GuessCell key={`${i}-title`} correct={getResult(guess, 'title')} />,
+										<GuessCell key={`${i}-genre`} correct={getResult(guess, 'genre')} />,
+										<GuessCell key={`${i}-year`} correct={getResult(guess, 'year')} />
+									])}
+								</GuessGrid>
+							</PlayerInfo>
+						</StyledContainter>
+					)
+				})}
+			{channelPlayers &&
+				channelPlayers.map((player) => {
+					return (
+						<StyledContainter>
+							<PlayerImage src={player.avatar} />
+							<PlayerInfo>
+								<GuessGrid>
+									{player.guesses.flatMap((guess, i) => [
+										<GuessCell key={`${i}-artist`} correct={getResult(guess, 'artist')} />,
+										<GuessCell key={`${i}-title`} correct={getResult(guess, 'title')} />,
+										<GuessCell key={`${i}-genre`} correct={getResult(guess, 'genre')} />,
+										<GuessCell key={`${i}-year`} correct={getResult(guess, 'year')} />
+									])}
+								</GuessGrid>
+							</PlayerInfo>
+						</StyledContainter>
+					)
+				})}
+			{channelPlayers &&
+				channelPlayers.map((player) => {
+					return (
+						<StyledContainter>
+							<PlayerImage src={player.avatar} />
+							<PlayerInfo>
+								<GuessGrid>
+									{player.guesses.flatMap((guess, i) => [
+										<GuessCell key={`${i}-artist`} correct={getResult(guess, 'artist')} />,
+										<GuessCell key={`${i}-title`} correct={getResult(guess, 'title')} />,
+										<GuessCell key={`${i}-genre`} correct={getResult(guess, 'genre')} />,
+										<GuessCell key={`${i}-year`} correct={getResult(guess, 'year')} />
+									])}
+								</GuessGrid>
+							</PlayerInfo>
+						</StyledContainter>
+					)
+				})}
 			{channelPlayers &&
 				channelPlayers.map((player) => {
 					return (

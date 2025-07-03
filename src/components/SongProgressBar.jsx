@@ -10,8 +10,11 @@ const StyledContainter = styled.div`
 	overflow: hidden;
 	background: #f9fafb;
 
-	@media only screen and (max-width: 719px) {
-		height: 20px;
+	@media (max-width: 479px) {
+		height: 28px;
+	}
+
+	@media (min-width: 480px) and (max-width: 1023px) {
 	}
 `
 

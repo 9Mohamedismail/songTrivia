@@ -10,15 +10,17 @@ import styled from 'styled-components'
 const GameWrapper = styled.div`
 	display: flex;
 	justify-content: center;
-	align-items: flex-start;
 	flex: 1;
 	width: 100%;
 	padding: 0 8px;
 	overflow: hidden;
 
-	@media only screen and (max-width: 719px) {
+	@media (max-width: 479px) {
 		flex-direction: column;
 		padding: 0 4px;
+	}
+
+	@media (min-width: 480px) and (max-width: 1023px) {
 	}
 `
 
@@ -27,12 +29,17 @@ const Game = styled.div`
 	flex-direction: column;
 	width: 100%;
 	max-width: 640px;
+	flex: 1;
+`
+
+const Spacer = styled.div`
+	flex: 1;
 `
 
 const GuessesSection = styled.div`
 	display: flex;
 	flex-direction: column;
-	flex: 1;
+	flex: none;
 	width: 100%;
 	min-height: 0;
 	overflow: hidden;
@@ -71,6 +78,7 @@ function GameUI({
 			<Game>
 				{!isGameOver ? (
 					<>
+						<Spacer />
 						<GuessesSection>
 							<Guesses songGuesses={songGuesses} song={song} />
 						</GuessesSection>

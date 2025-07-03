@@ -12,8 +12,11 @@ const StyledContainter = styled.div`
 	width: 100%;
 	padding: 0 12px;
 
-	@media only screen and (max-width: 719px) {
+	@media (max-width: 479px) {
 		padding: 0 8px;
+	}
+
+	@media (min-width: 480px) and (max-width: 1023px) {
 	}
 `
 const GuessContainter = styled.div`
@@ -29,14 +32,16 @@ const GuessContainter = styled.div`
 	box-sizing: border-box;
 	gap: 8px;
 
-	@media only screen and (max-width: 719px) {
+	@media (max-width: 479px) {
 		min-height: 40px;
+	}
+
+	@media (min-width: 480px) and (max-width: 1023px) {
 	}
 `
 
 const GuessText = styled.h1`
 	display: flex;
-	align-items: center;
 	font-size: 16px;
 	margin: 0;
 	font-family:
@@ -50,6 +55,8 @@ const GuessText = styled.h1`
 	flex: 1;
 	min-width: 0;
 	word-break: break-word;
+	overflow-wrap: anywhere;
+	width: 100%;
 
 	svg {
 		flex-shrink: 0;
@@ -57,14 +64,22 @@ const GuessText = styled.h1`
 		height: 14px;
 	}
 
-	@media only screen and (max-width: 719px) {
-		font-size: 16px;
+	@media (max-width: 479px) {
+		font-size: 12px;
+
+		${(props) => props.fieldType === 'artist' && 'flex: 1; min-width: 80px; max-width: 150px;'}
+		${(props) => props.fieldType === 'title' && 'flex: 1; min-width: 100px; max-width: 150px;'}
+		${(props) => props.fieldType === 'genre' && 'flex: 0 0 60px;'}
+		${(props) => props.fieldType === 'year' && 'flex: 0 0 50px;'}
 
 		svg {
 			flex-shrink: 0;
-			width: 16px;
-			height: 16px;
+			width: 12px;
+			height: 12px;
 		}
+	}
+
+	@media (min-width: 480px) and (max-width: 1023px) {
 	}
 `
 
@@ -105,19 +120,19 @@ function Guesses({ songGuesses, song }) {
 
 				return (
 					<GuessContainter key={guess.id}>
-						<GuessText correct={feedback.artist}>
+						<GuessText correct={feedback.artist} fieldType="artist">
 							{feedback.artist ? <FaCircleCheck /> : <FaCircleXmark />}
 							{guess.artist}
 						</GuessText>
-						<GuessText correct={feedback.title}>
+						<GuessText correct={feedback.title} fieldType="title">
 							{feedback.title ? <FaCircleCheck /> : <FaCircleXmark />}
 							{guess.title}
 						</GuessText>
-						<GuessText correct={feedback.genre}>
+						<GuessText correct={feedback.genre} fieldType="genre">
 							{feedback.genre ? <FaCircleCheck /> : <FaCircleXmark />}
 							{guess.genre}
 						</GuessText>
-						<GuessText correct={feedback.year}>
+						<GuessText correct={feedback.year} fieldType="year">
 							{feedback.year ? <FaCircleCheck /> : <FaCircleXmark />}
 							{guess.year}
 						</GuessText>

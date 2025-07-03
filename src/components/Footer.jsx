@@ -26,10 +26,13 @@ const StyledButton = styled.button`
 	transition: all 0.2s ease;
 	flex: 1;
 
-	@media only screen and (max-width: 719px) {
+	@media (max-width: 479px) {
 		padding: 4px 8px;
-		height: 40px;
-		font-size: 24px;
+		height: 48px;
+		font-size: 28px;
+	}
+
+	@media (min-width: 480px) and (max-width: 1023px) {
 	}
 `
 

@@ -10,8 +10,11 @@ const StyledContainter = styled.div`
 	padding: 12px;
 	box-sizing: border-box;
 
-	@media only screen and (max-width: 719px) {
-		padding: 8px;
+	@media (max-width: 479px) {
+		padding: 12px;
+	}
+
+	@media (min-width: 480px) and (max-width: 1023px) {
 	}
 `
 
@@ -22,8 +25,11 @@ const TimeDisplay = styled.h2`
 	color: #374151;
 	min-width: 50px;
 
-	@media only screen and (max-width: 719px) {
-		font-size: 24px;
+	@media (max-width: 479px) {
+		font-size: 40px;
+	}
+
+	@media (min-width: 480px) and (max-width: 1023px) {
 	}
 `
 
